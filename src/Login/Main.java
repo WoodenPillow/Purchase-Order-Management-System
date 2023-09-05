@@ -1,4 +1,8 @@
-package SalesManager;
+package Login;
+
+import SalesManager.Item;
+import SalesManager.SalesManager;
+import SalesManager.Supplier;
 
 public class Main {
     public static void main(String[] args) {

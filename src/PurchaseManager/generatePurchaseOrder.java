@@ -8,11 +8,11 @@ package PurchaseManager;
  *
  * @author user1
  */
-public class PurchaseOrder {
+public class generatePurchaseOrder {
     private String poId;
     private String pmName;
 
-    public PurchaseOrder(String poId, String pmName) {
+    public generatePurchaseOrder(String poId, String pmName) {
         this.poId = poId;
         this.pmName = pmName;
     }

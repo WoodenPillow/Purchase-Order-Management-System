@@ -1,12 +1,12 @@
 package SalesManager;
 
 public class SalesManager {
-    private ItemEntry itemEntry;
-    private SupplierEntry supplierEntry;
+    private itemEntry itemEntry;
+    private supplierEntry supplierEntry;
 
     public SalesManager() {
-        itemEntry = new ItemEntry();
-        supplierEntry = new SupplierEntry();
+        itemEntry = new itemEntry();
+        supplierEntry = new supplierEntry();
     }
 
     // Methods to interact with item and supplier management

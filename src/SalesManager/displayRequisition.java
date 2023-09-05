@@ -1,9 +1,9 @@
 package pom.assignment;
 
-import SalesManager.CreatePurchaseRequisition;
+import SalesManager.createPurchaseRequisition;
 
-public class DisplayPurchaseRequisition {
-    public void display(CreatePurchaseRequisition requisition){
+public class displayRequisition {
+    public void display(createPurchaseRequisition requisition){
     System.out.println("Generating Purchase Requisition...");
     try {
             // Sleep for 3 seconds (3000 milliseconds)
