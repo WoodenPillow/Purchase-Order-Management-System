@@ -4,9 +4,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import SalesManager.displayRequisition;
 
 public class PurchaseManager {
     private List<generatePurchaseOrder> purchaseOrders;
+    private displayRequisition displayRequisition = new displayRequisition();
+
+    public void viewRequisition() {
+        displayRequisition.displayRequisition();
+    }
 
     public PurchaseManager() {
         purchaseOrders = new ArrayList<>();

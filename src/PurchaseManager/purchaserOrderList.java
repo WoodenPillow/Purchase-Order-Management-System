@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package PurchaseManager;
 
 import java.util.List;
@@ -10,10 +6,10 @@ import java.util.List;
  *
  * @author user1
  */
-public class viewPurchaserOrders {
+public class purchaserOrderList {
     private List<generatePurchaseOrder> purchaseOrders;
 
-    public viewPurchaserOrders(List<generatePurchaseOrder> purchaseOrders) {
+    public purchaserOrderList(List<generatePurchaseOrder> purchaseOrders) {
         this.purchaseOrders = purchaseOrders;
     }
 

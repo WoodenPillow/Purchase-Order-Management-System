@@ -1,4 +1,4 @@
-package pom.assignment;
+package SalesManager;
 
 import SalesManager.createPurchaseRequisition;
 
