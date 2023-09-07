@@ -6,10 +6,10 @@ import java.util.List;
  *
  * @author user1
  */
-public class purchaserOrderList {
+public class purchaseOrderList {
     private List<generatePurchaseOrder> purchaseOrders;
 
-    public purchaserOrderList(List<generatePurchaseOrder> purchaseOrders) {
+    public purchaseOrderList(List<generatePurchaseOrder> purchaseOrders) {
         this.purchaseOrders = purchaseOrders;
     }
 

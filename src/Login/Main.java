@@ -1,20 +1,15 @@
 package Login;
-
-import SalesManager.Item;
-import SalesManager.SalesManager;
-import SalesManager.Supplier;
+import Administrator.*;
 
 public class Main {
     public static void main(String[] args) {
-        SalesManager salesManager = new SalesManager();
-
-        // Create and manage items and suppliers using the SalesManager
-        Item newItem = new Item("001", "Product A", "SUP001");
-        salesManager.addItem(newItem);
-
-        Supplier newSupplier = new Supplier("SUP001", "Supplier X");
-        salesManager.addSupplier(newSupplier);
-
-        // Perform other operations using the SalesManager class
+            
+            System.out.println("=======================================================");
+            System.out.println("Welcome to Purchase Order Management System by Group 55");
+            System.out.println("1. Login");
+            System.out.println("2. Register");
+            System.out.println("3. Exit");
+            System.out.println("=======================================================");
+            
     }
 }
