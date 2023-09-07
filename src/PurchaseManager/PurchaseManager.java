@@ -1,40 +1,48 @@
 package PurchaseManager;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.List;
-import SalesManager.displayRequisition;
+import Login.User;
+import SalesManager.*;
 
-public class PurchaseManager {
-    private List<generatePurchaseOrder> purchaseOrders;
-    private displayRequisition displayRequisition = new displayRequisition();
+public class PurchaseManager extends User {
 
-    public void viewRequisition() {
-        displayRequisition.displayRequisition();
-    }
+    public void purchaseManagerMenu(List<Item> items, List<Supplier> suppliers, List<PurchaseOrder> purchaseOrders) {
+        Scanner scanner = new Scanner(System.in);
+        boolean exit = false;
 
-    public PurchaseManager() {
-        purchaseOrders = new ArrayList<>();
-    }
+        while (!exit) {
+            System.out.println("\nPurchase Manager Menu:");
+            System.out.println("1. Generate Purchase Order");
+            System.out.println("2. View Item List");
+            System.out.println("3. View Purchase Order List");
+            System.out.println("4. View Supplier List");
+            System.out.println("5. Exit");
 
-    public void generatePurchaseOrder(String poId, String pmName) {
-        generatePurchaseOrder purchaseOrder = new generatePurchaseOrder(poId, pmName);
-        purchaseOrders.add(purchaseOrder);
-        savePurchaseOrdersToFile();
-        System.out.println("Purchase Order generated successfully!");
-    }
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
 
-    private void savePurchaseOrdersToFile() {
-        try {
-            FileWriter writer = new FileWriter("purchase_orders.txt");
-            for (generatePurchaseOrder purchaseOrder : purchaseOrders) {
-                String line = purchaseOrder.getPoId() + "," + purchaseOrder.getPmName() + "\n";
-                writer.write(line);
+            switch (choice) {
+                case 1:
+                    generatePurchaseOrder(items, suppliers);
+                    break;
+                case 2:
+                    viewItemList(items);
+                    break;
+                case 3:
+                    viewPurchaseOrderList(purchaseOrders);
+                    break;
+                case 4:
+                    viewSupplierList(suppliers);
+                    break;
+                case 5:
+                    exit = true;
+                    System.out.println("Exiting Purchase Manager Menu.");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
             }
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("Error while saving purchase orders: " + e.getMessage());
         }
     }
 }
