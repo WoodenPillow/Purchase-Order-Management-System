@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package SalesManager;
+package revision;
 
 import Administrator.fileHandler;
 import java.util.ArrayList;
@@ -14,16 +14,19 @@ import java.util.Scanner;
  *
  * @author Joshua
  */
+
 public class DailyItemWiseSalesEntry {
     private fileHandler obj1 = new fileHandler();
-    private List <String> salesEntryList;
-
-    public DailyItemWiseSalesEntry() {
+    private List <String> salesEntryList = new ArrayList<>();
+    
+    public DailyItemWiseSalesEntry(){}
+    
+    public void menu() {
         Scanner sc1 = new Scanner(System.in);
         int option;
         
         do{
-            System.out.println("Welcome To Daily Item-Wise Sales Entry. \nPlease Select An Option. \n1. Add \n2. Edit \n3. Delete \n4. Save \n5. Exit \n");
+            System.out.println("Welcome To Daily Item-Wise Sales Entry Management. \nPlease Select An Option. \n1. Add \n2. Edit \n3. Delete \n4. Save \n5. Exit \n");
             option = sc1.nextInt();
             
             switch (option){
@@ -54,7 +57,7 @@ public class DailyItemWiseSalesEntry {
     }
 
     public void addDIWSE(){
-        List <String> items = obj1.readData("ItemEntry.txt");
+        List <String> items = obj1.readData("ItemList.txt");
         System.out.println(items);
         
         System.out.println("Please Enter The Item Code You Want To Add: \n");
@@ -81,11 +84,12 @@ public class DailyItemWiseSalesEntry {
                     double newUnitPrice = sc1.nextDouble();
                     */
                     
-                    // May Replace By saveDIWSE();
                     String salesEntry = "Item Code: " + columns[0] + "\nItem Name: " + columns[1] + "\nSupplier ID: " + columns[2];
-                    List<String> salesEntryList = new ArrayList<>();
                     salesEntryList.add(salesEntry);
-                    obj1.writeData("SalesEntry.txt", salesEntryList);
+                            
+                    //Save Updated Data Into Text File
+                    saveDIWSE();
+                    
                     break;
                 }
             }
@@ -98,7 +102,7 @@ public class DailyItemWiseSalesEntry {
     }
     
     public void editDIWSE(){
-        List <String> salesEntryList = obj1.readData("SalesEntry.txt");
+        salesEntryList = obj1.readData("SalesEntry.txt");
         System.out.println(salesEntryList);
         
         Scanner sc1 = new Scanner(System.in);
@@ -133,23 +137,20 @@ public class DailyItemWiseSalesEntry {
                 // Update the list with the edited item
                 salesEntryList.set(i, updatedItem);
                 
-                // May Replace By saveDIWSE();
-                // Save the updated list to the file
-                obj1.writeData("SalesEntry.txt", salesEntryList);
-
-                System.out.println("Sales Entry Updated Successfully.");
+                //Save Updated Data Into Text File
+                saveDIWSE();
                 break;
             }
         }
 
         if (!found) {
-            System.out.println("Error: Item Code not found in the list.");
+            System.out.println("Error: Item Code not found in the file.");
         }
         
     }
     
     public void deleteDIWSE(){
-        List <String> salesEntryList = obj1.readData("SalesEntry.txt");
+        salesEntryList = obj1.readData("SalesEntry.txt");
         System.out.println(salesEntryList);
         
         Scanner sc1 = new Scanner(System.in);
@@ -168,22 +169,20 @@ public class DailyItemWiseSalesEntry {
                 // Remove the item from the list
                 salesEntryList.remove(i);
                 
-                //May Replace By saveDIWSE();
-                // Save the updated list to the file
-                obj1.writeData("SalesEntry.txt", salesEntryList);
-
-                System.out.println("Sales Entry Deleted Successfully.");
+                //Save Updated Data Into Text File
+                saveDIWSE();
                 return; // Exit the loop after deleting the item
             }
         }
 
         if (!found) {
-            System.out.println("Error: Item Code not found in the list.");
+            System.out.println("Error: Item Code not found in the file.");
         }
         
     }
     
     public void saveDIWSE(){
+        //Save Data Into File
         obj1.writeData("SalesEntry.txt", salesEntryList);
         System.out.println("Data Is Succussfully Saved To SalesEntry.txt");
     }
