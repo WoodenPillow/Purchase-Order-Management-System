@@ -1,0 +1,5 @@
+S0001 Geforce Ltd I0004 USA
+S0002 ROG I0003 Canada
+S0003 EVGA I0005 Belgium
+S0004 Gigabyte I0001 Taiwan
+S0005 MSI I0002 Taiwan
