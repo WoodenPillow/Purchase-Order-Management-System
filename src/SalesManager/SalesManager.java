@@ -33,6 +33,6 @@ public class SalesManager {
     public void editSupplier(String supplierCode, Supplier newSupplierDetails) {
         supplierEntry.editSupplier(supplierCode, newSupplierDetails);
     }
-
+    
     // Other methods related to sales management
 }

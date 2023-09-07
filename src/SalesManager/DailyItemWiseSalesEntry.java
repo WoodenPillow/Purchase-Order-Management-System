@@ -4,105 +4,187 @@
  */
 package SalesManager;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import Administrator.fileHandler;
+import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Scanner;
 
 /**
  *
- * @author user1
+ * @author Joshua
  */
-public class DailyItemWiseSalesEntry extends ItemEntry {
+public class DailyItemWiseSalesEntry {
+    private fileHandler obj1 = new fileHandler();
+    private List <String> salesEntryList;
 
-    public DailyItemWiseSalesEntry(List<Item> items) {
-        super(items); //ERROR
-    }
-
-    public void dailyItemWiseSalesEntry() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("------ Daily Item-wise Sales Entry ------");
-
-        // Display available items for sales entry
-        System.out.println("Available Items:");
-        for (Item item : items) {
-            System.out.println(item.getItemCode() + ". " + item.getItemName());
-        }
-
-        System.out.print("Enter the item code: ");
-        String itemCode = scanner.nextLine();
-        Item selectedItem = findItemByCode(itemCode);
-
-        if (selectedItem == null) {
-            System.out.println("Invalid item code. Returning to the main menu.");
-            return;
-        }
-
-        System.out.print("Enter the quantity sold: ");
-        int quantitySold = scanner.nextInt();
-
-        if (quantitySold <= 0) {
-            System.out.println("Invalid quantity sold. Returning to the main menu.");
-            return;
-        }
-
-        // Update the item's daily sales and stock
-        selectedItem.setDailySales(selectedItem.getDailySales() + quantitySold);
-        // Update the item stock using your preferred method (not shown in the provided code)
-
-        System.out.println("Daily sales entry successful!");
+    public DailyItemWiseSalesEntry() {
+        Scanner sc1 = new Scanner(System.in);
+        int option;
         
-        // Save the updated sales and stock information
-        saveDIWSE();
-    }
-
-    public void addDIWSE(Item newItem, int quantitySold) {
-        items.add(newItem);
-        newItem.setDailySales(quantitySold);
-        // Update the item stock using your preferred method (not shown in the provided code)
-    }
-
-    public void saveDIWSE() {
-        try {
-            FileWriter writer = new FileWriter("daily_sales_data.txt");
-            for (Item item : items) {
-                String line = item.getItemCode() + "," + item.getDailySales() + "\n";
-                writer.write(line);
+        do{
+            System.out.println("Welcome To Daily Item-Wise Sales Entry. \nPlease Select An Option. \n1. Add \n2. Edit \n3. Delete \n4. Save \n5. Exit \n");
+            option = sc1.nextInt();
+            
+            switch (option){
+                case 1: 
+                    addDIWSE();
+                    break;
+                
+                case 2:
+                    editDIWSE();
+                    break;
+               
+                case 3:
+                    deleteDIWSE();
+                    break;
+            
+                case 4:
+                    saveDIWSE();
+                    break;
+                    
+                case 5:
+                    System.out.println("Exiting...");
+                    return;
+                    
+                default:
+                    System.out.println("Wrong Input. Please Enter Again.");
             }
-            writer.close();
-            System.out.println("Daily sales data saved successfully!");
-        } catch (IOException e) {
-            System.out.println("Error while saving daily sales data: " + e.getMessage());
-        }
+        }while (option < 1 || option > 5);        
     }
 
-    public void deleteDIWSE(Item item) {
-        items.remove(item);
-        // Update the item stock using your preferred method (not shown in the provided code)
-    }
-
-    public void editDIWSE(Item item, int newQuantitySold) {
-        item.setDailySales(newQuantitySold);
-        // Update the item stock using your preferred method (not shown in the provided code)
-    }
-
-    private Item findItemByCode(String itemCode) {
-        for (Item item : items) {
-            if (item.getItemCode().equalsIgnoreCase(itemCode)) {
-                return item;
+    public void addDIWSE(){
+        List <String> items = obj1.readData("ItemEntry.txt");
+        System.out.println(items);
+        
+        System.out.println("Please Enter The Item Code You Want To Add: \n");
+        Scanner sc1 = new Scanner(System.in);
+        String input = sc1.next();
+        boolean found = false;
+        
+        while(true){
+            for (String item: items){
+                String[] columns = item.split(",");
+            
+                if (columns.length > 0 && columns[0].equals(input)){//columns[0] depends on the index of itemID in the list
+                    found = true;
+                    System.out.println("Item That You Want: ");
+                    System.out.println("Item Code: " + columns[0]); //Column name of list (Quantity Sold)(Item Name)(Supplier ID)(Unit Price)(Total Price)(Date)
+                    System.out.println("Item Code: " + columns[0]); //Column name of list 
+                    System.out.println("Item Code: " + columns[0]); //Column name of list
+                    
+                    /*
+                    // Prompt for new data (Code Is Used Only When Below Attributes Are Not Entered In ItemEntry.txt)
+                    System.out.println("Enter new quantity sold: ");
+                    int newQuantity = sc1.nextInt();
+                    System.out.println("Enter new unit price: ");
+                    double newUnitPrice = sc1.nextDouble();
+                    */
+                    
+                    // May Replace By saveDIWSE();
+                    String salesEntry = "Item Code: " + columns[0] + "\nItem Name: " + columns[1] + "\nSupplier ID: " + columns[2];
+                    List<String> salesEntryList = new ArrayList<>();
+                    salesEntryList.add(salesEntry);
+                    obj1.writeData("SalesEntry.txt", salesEntryList);
+                    break;
+                }
+            }
+        
+            if (found){
+                System.out.println("Error: ItemCode not found in the file. \nPlease Enter Again.\n");
+                found = false;
             }
         }
-        return null;
     }
     
-    /*
-    // Getter and setter for daily sales
-    public int getDailySales() {
-        return dailySales;
-    }
+    public void editDIWSE(){
+        List <String> salesEntryList = obj1.readData("SalesEntry.txt");
+        System.out.println(salesEntryList);
+        
+        Scanner sc1 = new Scanner(System.in);
+        System.out.println("Enter the Item Code you want to edit: ");
+        String input = sc1.next();
+        boolean found = false;
+        
+        for (int i = 0; i < salesEntryList.size(); i++) {
+            String item = salesEntryList.get(i);
+            String[] columns = item.split("\n");
 
-    public void setDailySales(int dailySales) {
-        this.dailySales = dailySales;
+            if (columns.length > 0 && columns[0].equals(input)) {
+                found = true;
+                System.out.println("Item Found. Current Details:");
+                System.out.println("Item Code: " + columns[0]);
+                System.out.println("Item Name: " + columns[1]);
+                System.out.println("Supplier ID: " + columns[2]);
+
+                // Prompt For Edit Item Value
+                System.out.println("Enter new quantity sold: "); 
+                int newQuantity = sc1.nextInt();
+                System.out.println("Enter new unit price: ");
+                double newUnitPrice = sc1.nextDouble();
+
+                // Update the item entry with new values
+                columns[3] = Integer.toString(newQuantity);
+                columns[4] = Double.toString(newUnitPrice);
+
+                // Join the updated columns into a single string
+                String updatedItem = String.join("\n", columns);
+
+                // Update the list with the edited item
+                salesEntryList.set(i, updatedItem);
+                
+                // May Replace By saveDIWSE();
+                // Save the updated list to the file
+                obj1.writeData("SalesEntry.txt", salesEntryList);
+
+                System.out.println("Sales Entry Updated Successfully.");
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Error: Item Code not found in the list.");
+        }
+        
     }
-    */ //Need to be typed in Item()
+    
+    public void deleteDIWSE(){
+        List <String> salesEntryList = obj1.readData("SalesEntry.txt");
+        System.out.println(salesEntryList);
+        
+        Scanner sc1 = new Scanner(System.in);
+        System.out.println("Enter the Item Code you want to delete: ");
+        String input = sc1.next();
+        boolean found = false;
+
+        for (int i = 0; i < salesEntryList.size(); i++) {
+            String item = salesEntryList.get(i);
+            String[] columns = item.split("\n");
+
+            if (columns.length > 0 && columns[0].equals(input)) {
+                found = true;
+                System.out.println("Item Found. Deleting...");
+
+                // Remove the item from the list
+                salesEntryList.remove(i);
+                
+                //May Replace By saveDIWSE();
+                // Save the updated list to the file
+                obj1.writeData("SalesEntry.txt", salesEntryList);
+
+                System.out.println("Sales Entry Deleted Successfully.");
+                return; // Exit the loop after deleting the item
+            }
+        }
+
+        if (!found) {
+            System.out.println("Error: Item Code not found in the list.");
+        }
+        
+    }
+    
+    public void saveDIWSE(){
+        obj1.writeData("SalesEntry.txt", salesEntryList);
+        System.out.println("Data Is Succussfully Saved To SalesEntry.txt");
+    }
 }
