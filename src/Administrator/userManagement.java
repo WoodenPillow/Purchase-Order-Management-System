@@ -31,17 +31,17 @@ public class userManagement {
         System.out.println("\n============================================================");
         System.out.println("\tList of Users");
         System.out.println("\n============================================================");
-        System.out.printf("%-15s %-15s %-10s %-10s%n", "User ID", "Username", "Password", "Role");
+        System.out.printf("%-15s %-15s %-10s %-15s%n", "User ID", "Username", "Password", "Role");
 
         for (User user : users) {
-            System.out.printf("%-15s %-15s %-10s %-10s%n", user.getUserID(), user.getUsername(), user.getPassword(), user.getRole());
+            System.out.printf("%-15s %-15s %-10s %-15s%n", user.getUserID(), user.getUsername(), user.getPassword(), user.getRole());
         }
     }
 
     public void addUser(String userID, String username, String password, String role) {
-        // Check for duplicate usernames
-        if (isUsernameDuplicate(username)) {
-            System.out.println("User with the same username already exists. Adding failed.");
+        // Check for duplicate User IDs
+        if (isUserIDDuplicate(userID)) {
+            System.out.println("User with the same User ID already exists. Adding failed.");
             return;
         }
 
@@ -50,17 +50,17 @@ public class userManagement {
         saveUsers();
     }
 
-    private boolean isUsernameDuplicate(String username) {
+    private boolean isUserIDDuplicate(String userID) {
         for (User user : users) {
-            if (user.getUsername().equalsIgnoreCase(username)) {
+            if (user.getUserID().equalsIgnoreCase(userID)) {
                 return true;
             }
         }
         return false;
     }
 
-    public void editUser(String username, String newPassword, String newRole) {
-        User editedUser = findUserByUsername(username);
+    public void editUser(String userID, String newPassword, String newRole) {
+        User editedUser = findUserByUserID(userID);
         if (editedUser != null) {
             editedUser.setPassword(newPassword);
             editedUser.setRole(newRole);
@@ -70,8 +70,8 @@ public class userManagement {
         }
     }
 
-    public void deleteUser(String username) {
-        User deletedUser = findUserByUsername(username);
+    public void deleteUser(String userID) {
+        User deletedUser = findUserByUserID(userID);
         if (deletedUser != null) {
             users.remove(deletedUser);
             saveUsers();
@@ -91,9 +91,9 @@ public class userManagement {
         }
     }
 
-    public User findUserByUsername(String username) {
+    public User findUserByUserID(String userID) {
         for (User user : users) {
-            if (user.getUsername().equalsIgnoreCase(username)) {
+            if (user.getUserID().equalsIgnoreCase(userID)) {
                 return user;
             }
         }
@@ -101,7 +101,7 @@ public class userManagement {
     }
 
     public static void main(String[] args) {
-        userManagement userManagement = new userManagement();
+        userManagement userManagement = new userManagement(); // Use userManagement class name
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
@@ -119,32 +119,38 @@ public class userManagement {
 
             switch (choice) {
                 case 1:
-                    userManagement.viewUserList();
+                    userManagement.viewUserList(); // Call viewUserList() on userManagement object
                     break;
                 case 2:
-                    System.out.print("Enter User ID: ");
-                    String addUserID = scanner.nextLine();
-                    System.out.print("Enter Username: ");
-                    String addUsername = scanner.nextLine();
-                    System.out.print("Enter Password: ");
-                    String addPassword = scanner.nextLine();
-                    System.out.print("Enter Role: ");
-                    String addRole = scanner.nextLine();
-                    userManagement.addUser(addUserID, addUsername, addPassword, addRole);
+                    System.out.print("Enter User ID (SMXXX, PMXXX, ADMXX): ");
+                    String addUserID = scanner.nextLine().toUpperCase();
+                    String role = getRoleFromUserID(addUserID);
+                    if (role != null) {
+                        System.out.print("Enter Username: ");
+                        String addUsername = scanner.nextLine();
+                        System.out.print("Enter Password: ");
+                        String addPassword = scanner.nextLine();
+                        userManagement.addUser(addUserID, addUsername, addPassword, role); // Call addUser() on userManagement object
+                    } else {
+                        System.out.println("Invalid User ID format. Adding failed.");
+                    }
                     break;
                 case 3:
-                    System.out.print("Enter Username to Edit: ");
-                    String editUsername = scanner.nextLine();
-                    System.out.print("Enter New Password: ");
-                    String editPassword = scanner.nextLine();
-                    System.out.print("Enter New Role: ");
-                    String editRole = scanner.nextLine();
-                    userManagement.editUser(editUsername, editPassword, editRole);
+                    System.out.print("Enter User ID to Edit: ");
+                    String editUserID = scanner.nextLine().toUpperCase();
+                    String editRole = getRoleFromUserID(editUserID);
+                    if (editRole != null) {
+                        System.out.print("Enter New Password: ");
+                        String editPassword = scanner.nextLine();
+                        userManagement.editUser(editUserID, editPassword, editRole); // Call editUser() on userManagement object
+                    } else {
+                        System.out.println("Invalid User ID format. Edit failed.");
+                    }
                     break;
                 case 4:
-                    System.out.print("Enter Username to Delete: ");
-                    String deleteUsername = scanner.nextLine();
-                    userManagement.deleteUser(deleteUsername);
+                    System.out.print("Enter User ID to Delete: ");
+                    String deleteUserID = scanner.nextLine().toUpperCase();
+                    userManagement.deleteUser(deleteUserID); // Call deleteUser() on userManagement object
                     break;
                 case 5:
                     exit = true;
@@ -155,42 +161,15 @@ public class userManagement {
             }
         }
     }
-}
 
-class User {
-    private String userID;
-    private String username;
-    private String password;
-    private String role;
-
-    public User(String userID, String username, String password, String role) {
-        this.userID = userID;
-        this.username = username;
-        this.password = password;
-        this.role = role;
-    }
-
-    public String getUserID() {
-        return userID;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
+    private static String getRoleFromUserID(String userID) {
+        if (userID.startsWith("SM")) {
+            return "Sales_Manager";
+        } else if (userID.startsWith("PM")) {
+            return "Purchase_Manager";
+        } else if (userID.startsWith("ADM")) {
+            return "Administrator";
+        }
+        return null;
     }
 }

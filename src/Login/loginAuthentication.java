@@ -1,24 +1,20 @@
 package Login;
 
-// LoginAuthentication.java
 import java.io.*;
 import java.util.*;
 
 public class loginAuthentication {
-    private final String FILE_PATH = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\Login\\LoginCredentials.txt";
-    private List<User> users = new ArrayList<>();
-    private User currentUser;
+    private final String filePath;
+    private List<User> users;
 
-    public loginAuthentication() {
+    public loginAuthentication(String filePath) {
+        this.filePath = filePath;
         loadUsers();
     }
 
-    public User getCurrentUser(){
-        return currentUser;
-    }
-    
     private void loadUsers() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+        users = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] userData = line.split(",");
@@ -28,18 +24,16 @@ public class loginAuthentication {
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error reading user credentials: " + e.getMessage());
+            throw new RuntimeException("Error reading user credentials: " + e.getMessage(), e);
         }
     }
 
     public User authenticateUser(String username, String password) {
         for (User user : users) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                currentUser = user; // Set the current user upon successful authentication
                 return user; // User is authenticated
             }
         }
         return null; // Authentication failed
     }
 }
-
