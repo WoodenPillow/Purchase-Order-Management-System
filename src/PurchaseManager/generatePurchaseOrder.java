@@ -19,10 +19,17 @@ public class generatePurchaseOrder  {
     private static final String usersTextFile = "C:\\Users\\user1\\Desktop\\APU\\Year 2 Sem 1\\Object Oriented Development with Java\\Assignment\\Assignment\\Purchase-Order-Management-System\\src\\Login\\LoginCredentials.txt";
     private static final String prTextFile = "C:\\Users\\user1\\Desktop\\APU\\Year 2 Sem 1\\Object Oriented Development with Java\\Assignment\\Assignment\\Purchase-Order-Management-System\\src\\SalesManager\\PurchaseRequisition.txt";
     
+    private String purchaseManagerID;
+    private String purchaseManagerRole;
+    
     private List<String> purchaseOrderList = new ArrayList<>();
-    private userManagement userManager;
     
     public generatePurchaseOrder(){}
+    
+    public generatePurchaseOrder(String purchaseManagerID, String purchaseManagerRole) {
+        this.purchaseManagerID = purchaseManagerID;
+        this.purchaseManagerRole = purchaseManagerRole;
+    }
     
     public void menu() {
         Scanner sc1 = new Scanner(System.in);
@@ -115,9 +122,6 @@ public class generatePurchaseOrder  {
         Date poDate = parseDate(enterDate);
         
         // System will automatically get the current purchase manager
-        String purchaseManagerID = userManager.getPurchaseManagerID();
-        String purchaseManagerRole = userManager.getPurchaseManagerRole();
-        
         if (purchaseManagerID != null) {
             // Use purchaseManagerID and purchaseManagerRole as needed in your code
             System.out.println("Purchase Manager ID: " + purchaseManagerID);

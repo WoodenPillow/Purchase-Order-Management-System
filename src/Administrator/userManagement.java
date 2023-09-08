@@ -172,18 +172,4 @@ public class userManagement {
         }
         return null;
     }
-    
-    // Method to get the Purchase Manager's ID and role
-    public String getPurchaseManagerID() {
-        for (User user : users) {
-            if (user.getRole().equalsIgnoreCase("Purchase_Manager")) {
-                return user.getUserID();
-            }
-        }
-        return null; // Return null if Purchase Manager is not found
-    }
-
-    public String getPurchaseManagerRole() {
-        return "Purchase_Manager";
-    }
 }
