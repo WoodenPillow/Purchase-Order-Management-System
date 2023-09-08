@@ -101,7 +101,7 @@ public class userManagement {
     }
 
     public static void main(String[] args) {
-        UserManagement userManagement = new UserManagement(); // Use UserManagement class name
+        userManagement userManagement = new userManagement(); // Use userManagement class name
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
