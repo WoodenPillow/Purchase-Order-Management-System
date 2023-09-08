@@ -11,8 +11,8 @@ import java.text.SimpleDateFormat;
  */
 
 public class DailyItemWiseSalesEntry {
-    String itemTextFile = "C:\\Users\\user1\\Desktop\\APU\\Year 2 Sem 1\\Object Oriented Development with Java\\Assignment\\Assignment\\Purchase-Order-Management-System\\src\\SalesManager\\Item.txt";
-    String salesEntryTextFile = "C:\\Users\\user1\\Desktop\\APU\\Year 2 Sem 1\\Object Oriented Development with Java\\Assignment\\Assignment\\Purchase-Order-Management-System\\src\\SalesManager\\SalesEntry.txt";
+    String itemTextFile = "C:\\Users\\user\\Desktop\\Uni Stuff\\Year 2 Semester 1\\OODJ\\Assignment\\Purchase-Order-Management-System\\src\\SalesManager\\Item.txt";
+    String salesEntryTextFile = "C:\\Users\\user\\Desktop\\Uni Stuff\\Year 2 Semester 1\\OODJ\\Assignment\\Purchase-Order-Management-System\\src\\SalesManager\\SalesEntry.txt";
     List <String> salesEntryList = new ArrayList<>();
     
     
@@ -25,7 +25,7 @@ public class DailyItemWiseSalesEntry {
     public void menu() {
     Scanner sc1 = new Scanner(System.in);
 
-    while (true) {
+    //while (true) {
         System.out.println("Welcome To Daily Item-Wise Sales Entry Management. \nPlease Select An Option. \n1. Add \n2. Edit \n3. Delete \n4. Exit\n");
 
         try {
@@ -45,7 +45,6 @@ public class DailyItemWiseSalesEntry {
 
                 case 4:
                     System.out.println("Exiting...");
-                    System.exit(0); // Exit the entire program
                     break;
 
                 default:
@@ -57,7 +56,7 @@ public class DailyItemWiseSalesEntry {
             System.out.println("\nInvalid input. Please enter a valid option (1-4).\n");
         }
     }
-}
+
 
         public void addDIWSE(){
 

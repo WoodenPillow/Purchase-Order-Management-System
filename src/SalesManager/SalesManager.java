@@ -4,15 +4,20 @@ import java.util.Scanner;
 import java.util.List;
 import Login.*;
 
-public class SalesManager extends User {
+public class SalesManager{
     
-    public void salesManagerMenu(List<Item> items, List<PurchaseRequisition> requisitions, List<PurchaseOrder> purchaseOrders) {
+    public static void main (String[] args){
+        SalesManager sm = new SalesManager();
+        sm.salesManagerMenu();
+    }
+    
+    public void salesManagerMenu() {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
         while (!exit) {
             System.out.println("\nSales Manager Menu:");
-            System.out.println("1. Create Purchase Requisition");
+            System.out.println("1. Purchase Requisition");
             System.out.println("2. Enter Daily Item-Wise Sales");
             System.out.println("3. Display Purchase Requisition");
             System.out.println("4. Enter Item Details");
