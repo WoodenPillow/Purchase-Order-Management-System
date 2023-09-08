@@ -4,8 +4,8 @@ import java.io.*;
 import java.util.*;
 
 public class itemEntry {
-    private static final String FILE_PATH = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System\\src\\SalesManager\\Item.txt";
-    private static final String FILE_PATH_BUFFER = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System\\src\\SalesManager\\Item_buffer.txt";
+    private static final String FILE_PATH = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\SalesManager\\Item.txt";
+    private static final String FILE_PATH_BUFFER = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\SalesManager\\Item_Buffer.txt";
 
     private static final int ITEM_FIELDS = 5; // Number of fields in an item record
 
@@ -65,7 +65,6 @@ public class itemEntry {
         }
     }
 
-
     private static void addItem(Scanner scanner) {
         while (true) {
             viewItems();
@@ -92,10 +91,10 @@ public class itemEntry {
             int itemStock = scanner.nextInt();
 
             System.out.print("Supplier ID: ");
-            int supplierID = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
+            String supplierID = scanner.next();
+            scanner.nextLine(); // Consume newline
 
-            String newItem = String.format("%s %s %.2f %d %d", itemID, itemName, itemPrice, itemStock, supplierID);
+            String newItem = String.format("%s,%s,%.2f,%d,%s", itemID, itemName, itemPrice, itemStock, supplierID);
             writeItemToFile(newItem);
             System.out.println("Item added successfully.");
         }
@@ -117,8 +116,8 @@ public class itemEntry {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] itemFields = line.split("\\s+");
-                if (itemFields.length == ITEM_FIELDS) {
+                String[] itemFields = line.split(",");
+                if (itemFields.length == ITEM_FIELDS) { // Use commas as separators
                     if (editItemID.equals(itemFields[0])) {
                         tracker++;
                         System.out.println("Original item info:");
@@ -131,10 +130,10 @@ public class itemEntry {
                         System.out.print("Item Quantity: ");
                         int itemStock = scanner.nextInt();
                         System.out.print("Supplier ID: ");
-                        int itemRestockLimit = scanner.nextInt();
-                        scanner.nextLine();  // Consume newline
+                        String supplierID = scanner.next();
+                        scanner.nextLine(); // Consume newline
 
-                        String editedItem = String.format("%s %s %.2f %d %d", itemFields[0], itemName, itemPrice, itemStock);
+                        String editedItem = String.format("%s,%s,%.2f,%d,%s", itemFields[0], itemName, itemPrice, itemStock, supplierID);
                         bufferLines.add(editedItem);
                     } else {
                         bufferLines.add(line);
@@ -154,6 +153,7 @@ public class itemEntry {
         }
     }
 
+
     private static void deleteItem(Scanner scanner) {
         while (true) {
             int tracker = 0;
@@ -170,7 +170,7 @@ public class itemEntry {
             try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    String[] itemFields = line.split("\\s+");
+                    String[] itemFields = line.split(",");
                     if (itemFields.length == ITEM_FIELDS) {
                         if (deleteItemID.equals(itemFields[0])) {
                             tracker++;
@@ -180,7 +180,7 @@ public class itemEntry {
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+            e.printStackTrace();
             }
 
             if (tracker != 0) {
@@ -188,17 +188,19 @@ public class itemEntry {
                 System.out.println("Item deleted successfully.");
                 renameBufferFile();
             } else {
-                System.out.println("Item ID not found.");
+            System.out.println("Item ID not found.");
             }
         }
     }
 
-    private static void writeItemToFile(String item) {
+
+    private static void writeItemToFile(String newItem) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
-            writer.write(item);
+            writer.write(newItem);
             writer.newLine();
         } catch (IOException e) {
             e.printStackTrace();
+            System.err.println("Error writing item file: " + e.getMessage());
         }
     }
 
@@ -226,14 +228,19 @@ public class itemEntry {
 
     private static String generateNewID() {
         int maxID = 0;
+        Set<String> existingIDs = new HashSet<>(); // Keep track of existing item IDs
+
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] itemFields = line.split("\\s+");
+                String[] itemFields = line.split(",");
                 if (itemFields.length == ITEM_FIELDS) {
-                    int itemID = Integer.parseInt(itemFields[0]);
-                    if (itemID > maxID) {
-                        maxID = itemID;
+                    String itemID = itemFields[0];
+                    existingIDs.add(itemID); // Add existing item IDs to the set
+
+                    int itemIntID = Integer.parseInt(itemID.substring(1)); // Parse item ID as integer
+                    if (itemIntID > maxID) {
+                        maxID = itemIntID;
                     }
                 }
             }
@@ -241,8 +248,17 @@ public class itemEntry {
             e.printStackTrace();
         }
 
-        return String.format("%04d", maxID + 1);
-    }
+    // Generate the next available item ID
+    String newID;
+    do {
+        maxID++; // Increment maxID
+        newID = String.format("I%04d", maxID); // Format as item ID
+    } while (existingIDs.contains(newID)); // Check if it already exists
+
+    return newID;
+}
+  
+
 
     private static boolean isItemNameExists(String itemName) {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {

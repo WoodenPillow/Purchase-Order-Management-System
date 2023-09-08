@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 
 public class supplierList {
-    private static final String FILE_PATH = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System\\src\\SalesManager\\Supplier.txt";
+    private static final String FILE_PATH = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\SalesManager\\Supplier.txt";
 
     public static void main(String[] args) {
         viewSuppliers();

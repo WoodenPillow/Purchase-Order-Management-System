@@ -2,7 +2,7 @@ package SalesManager;
 
 import java.util.Scanner;
 import java.util.List;
-import Login.User;
+import Login.*;
 
 public class SalesManager extends User {
     

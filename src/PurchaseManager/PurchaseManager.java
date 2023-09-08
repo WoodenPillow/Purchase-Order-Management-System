@@ -2,7 +2,7 @@ package PurchaseManager;
 
 import java.util.Scanner;
 import java.util.List;
-import Login.User;
+import Login.*;
 import SalesManager.*;
 
 public class PurchaseManager extends User {

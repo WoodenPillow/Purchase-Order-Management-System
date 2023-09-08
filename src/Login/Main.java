@@ -1,7 +1,8 @@
 package Login;
 
 import java.util.Scanner;
-import PurchaseManager.PurchaseManager;
+import PurchaseManager.*;
+import SalesManager.*;
 
 public class Main {
     public static void main(String[] args) {

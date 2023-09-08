@@ -3,8 +3,8 @@ package SalesManager;
 import java.io.*;
 import java.util.*;
 
-public class supplierEntry {
-    private static final String FILE_PATH = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System\\src\\SalesManager\\Supplier.txt";
+public final class supplierEntry {
+    private static final String FILE_PATH = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\SalesManager\\Supplier.txt";
     private List<Supplier> suppliers = new ArrayList<>();
 
     public supplierEntry() {
@@ -31,42 +31,90 @@ public class supplierEntry {
         }
     }
 
-    private static void viewSuppliers() {
+    private void viewSuppliers() {
         System.out.println("\n============================================================");
         System.out.println("\tList of Suppliers");
         System.out.println("\n============================================================");
         System.out.printf("%-10s %-20s %-20s %-20s%n", "ID", "Name", "Item ID", "Supplier Country");
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] supplierFields = line.split(",");
-                if (supplierFields.length == 4) {
-                    System.out.printf("%-10s %-20s %-20s %-20s%n",
-                            supplierFields[0], supplierFields[1], supplierFields[2], supplierFields[3]);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (Supplier supplier : suppliers) {
+            System.out.printf("%-10s %-20s %-20s %-20s%n",
+                    supplier.getSupplierID(), supplier.getSupplierName(),
+                    supplier.getItemID(), supplier.getSupplierCountry());
         }
     }
 
-    public void addSupplier(String supplierID, String supplierName, String itemID, String supplierCountry) {
+    public void addSupplier(String supplierName, String itemID, String supplierCountry) {
+        // Check for duplicate supplier names
+        if (isSupplierNameDuplicate(supplierName)) {
+            System.out.println("Supplier with the same name already exists. Adding failed.");
+            return;
+        }
+
+        // Check if the Item ID matches the required pattern
+        if (!itemID.matches("^I\\d+$")) {
+            System.out.println("Invalid Item ID format. Item ID must start with 'I' followed by numbers.");
+            return;
+        }
+
+        String supplierID = generateNewID();
         Supplier newSupplier = new Supplier(supplierID, supplierName, itemID, supplierCountry);
         suppliers.add(newSupplier);
         saveSuppliers();
     }
 
+
+
+    // Helper method to check if a supplier name already exists
+    private boolean isSupplierNameDuplicate(String supplierName) {
+        for (Supplier supplier : suppliers) {
+            if (supplier.getSupplierName().equalsIgnoreCase(supplierName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Helper method to check if a supplier ID already exists
+    private boolean isSupplierIDDuplicate(String supplierID) {
+        for (Supplier supplier : suppliers) {
+            if (supplier.getSupplierID().equalsIgnoreCase(supplierID)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void editSupplier(String supplierID, String supplierName, String itemID, String supplierCountry) {
         Supplier editedSupplier = findSupplierByID(supplierID);
         if (editedSupplier != null) {
-            editedSupplier.setSupplierName(supplierName);
-            editedSupplier.setItemID(itemID);
-            editedSupplier.setSupplierCountry(supplierCountry);
-            saveSuppliers();
+            // Check if the Item ID is being changed
+            if (!editedSupplier.getItemID().equalsIgnoreCase(itemID)) {
+                // Item ID is being changed, generate a new Supplier ID
+                String newSupplierID = generateNewID();
+                editedSupplier.setItemID(itemID); // Update Item ID
+                editedSupplier.setSupplierCountry(supplierCountry); // Update Supplier Country
+                saveSuppliers();
+            } else {
+                // Item ID remains the same, update other fields
+                editedSupplier.setSupplierName(supplierName);
+                editedSupplier.setSupplierCountry(supplierCountry);
+                saveSuppliers();
+            }
         } else {
             System.out.println("Supplier not found. Edit failed.");
         }
+    }
+
+
+    // Helper method to check if an itemID already exists
+    private boolean isItemIDDuplicate(String itemID) {
+        for (Supplier supplier : suppliers) {
+            if (supplier.getItemID().equalsIgnoreCase(itemID)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void deleteSupplier(String supplierID) {
@@ -82,7 +130,11 @@ public class supplierEntry {
     private void saveSuppliers() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
             for (Supplier supplier : suppliers) {
-                writer.write(supplier.toString());
+                // Use commas (,) as separators
+                writer.write(supplier.getSupplierID() + "," +
+                             supplier.getSupplierName() + "," +
+                             supplier.getItemID() + "," +
+                             supplier.getSupplierCountry());
                 writer.newLine();
             }
         } catch (IOException e) {
@@ -97,6 +149,30 @@ public class supplierEntry {
             }
         }
         return null;
+    }
+
+    private String generateNewID() {
+        int maxID = 0;
+        Set<String> existingIDs = new HashSet<>(); // Keep track of existing supplier IDs
+
+        for (Supplier supplier : suppliers) {
+            String supplierID = supplier.getSupplierID();
+            existingIDs.add(supplierID); // Add existing supplier IDs to the set
+
+            int supplierIntID = Integer.parseInt(supplierID.substring(1)); // Parse supplier ID as an integer
+            if (supplierIntID > maxID) {
+                maxID = supplierIntID;
+            }
+        }
+
+        // Generate the next available supplier ID
+        String newID;
+        do {
+            maxID++; // Increment maxID
+            newID = String.format("S%04d", maxID); // Format as a supplier ID
+        } while (existingIDs.contains(newID)); // Check if it already exists
+
+        return newID;
     }
 
     public static void main(String[] args) {
@@ -118,7 +194,7 @@ public class supplierEntry {
 
             switch (choice) {
                 case 1:
-                    viewSuppliers();
+                    supplierEntry.viewSuppliers(); // Call viewSuppliers to display suppliers
                     break;
                 case 2:
                     System.out.print("Enter Supplier ID: ");
@@ -129,7 +205,7 @@ public class supplierEntry {
                     String addItemID = scanner.nextLine();
                     System.out.print("Enter Supplier Country: ");
                     String addSupplierCountry = scanner.nextLine();
-                    supplierEntry.addSupplier(addSupplierID, addSupplierName, addItemID, addSupplierCountry);
+                    supplierEntry.addSupplier(addSupplierName, addItemID, addSupplierCountry);
                     break;
                 case 3:
                     System.out.print("Enter Supplier ID to Edit: ");
@@ -175,12 +251,24 @@ class Supplier {
         return supplierID;
     }
 
+    public String getSupplierName() {
+        return supplierName;
+    }
+
     public void setSupplierName(String supplierName) {
         this.supplierName = supplierName;
     }
 
+    public String getItemID() {
+        return itemID;
+    }
+
     public void setItemID(String itemID) {
         this.itemID = itemID;
+    }
+
+    public String getSupplierCountry() {
+        return supplierCountry;
     }
 
     public void setSupplierCountry(String supplierCountry) {
@@ -189,7 +277,7 @@ class Supplier {
 
     @Override
     public String toString() {
-        return String.format("%-12s%-16s%-10s%-16s",
+        return String.format("%s\t%s\t%s\t%s",
             supplierID,
             supplierName,
             itemID,
@@ -197,5 +285,6 @@ class Supplier {
         );
     }
 }
+
 
 
