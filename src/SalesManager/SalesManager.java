@@ -26,22 +26,28 @@ public class SalesManager extends User {
 
             switch (choice) {
                 case 1:
-                    createPurchaseRequisition(items);
+                    createPurchaseRequisition createpr = new createPurchaseRequisition();
+                    createpr.menu();
                     break;
                 case 2:
-                    enterDailyItemWiseSales(items);
+                    DailyItemWiseSalesEntry diwse = new DailyItemWiseSalesEntry();
+                    diwse.menu();
                     break;
                 case 3:
-                    displayPurchaseRequisition(requisitions);
+                    displayRequisition displaypr = new displayRequisition();
+                    displaypr.displayPurchaseRequisitions();
                     break;
                 case 4:
-                    enterItemDetails(items);
+                    itemEntry itementry = new itemEntry();
+                    itementry.menu();
                     break;
                 case 5:
-                    enterSupplierDetails(suppliers);
+                    supplierEntry supplierentry = new supplierEntry();
+                    supplierentry.menu();
                     break;
                 case 6:
-                    viewPurchaseOrder(purchaseOrders);
+                    viewPurchaseOrder viewpo = new viewPurchaseOrder();
+                    viewpo.displayPurchaseOrders();
                     break;
                 case 7:
                     exit = true;

@@ -9,7 +9,7 @@ public class itemEntry {
 
     private static final int ITEM_FIELDS = 5; // Number of fields in an item record
 
-    public static void main(String[] args) {
+    public static void menu() {
         Scanner scanner = new Scanner(System.in);
         int choice;
 

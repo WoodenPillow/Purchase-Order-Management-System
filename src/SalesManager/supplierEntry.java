@@ -175,7 +175,7 @@ public final class supplierEntry {
         return newID;
     }
 
-    public static void main(String[] args) {
+    public static void menu() {
         supplierEntry supplierEntry = new supplierEntry();
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package SalesManager;
 
 import java.util.*;
@@ -10,16 +6,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.regex.*;
 
-/**
- *
- * @author Oscar
- */
 public class createPurchaseRequisition {
     private String requisitionID;
     private String itemCode;
     private double totalPrice;
-    private String FILE_PATH1 = "/C:/Users/user/Desktop/Uni Stuff/Year 2 Semester 1/OODJ/Assignment/Purchase-Order-Management-System/Purchase-Order-Management-System/src/SalesManager/Item.txt/";
-    private String FILE_PATH2 = "/C:/Users/user/Desktop/Uni Stuff/Year 2 Semester 1/OODJ/Assignment/Purchase-Order-Management-System/Purchase-Order-Management-System/src/SalesManager/PurchaseRequisition.txt/";
+    private String FILE_PATH1 = "/C:/Users/user/Desktop/Uni Stuff/Year 2 Semester 1/OODJ/Assignment/Purchase-Order-Management-System/src/SalesManager/Item.txt/";
+    private String FILE_PATH2 = "/C:/Users/user/Desktop/Uni Stuff/Year 2 Semester 1/OODJ/Assignment/Purchase-Order-Management-System/src/SalesManager/PurchaseRequisition.txt/";
     private int quantityRequired;
     private String requiredDate;
     private String supplierCode;
