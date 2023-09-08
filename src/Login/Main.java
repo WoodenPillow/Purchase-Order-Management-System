@@ -7,7 +7,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         loginAuthentication authentication = new loginAuthentication("C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\Login\\LoginCredentials.txt"); // Create an instance of loginAuthentication
 
-        System.out.println("Welcome to the Purchase Order Management System!");
+        System.out.println("Welcome to the Purchase Order Management System by Group 55 (YAP MING SHEN, HEW YAO REN & JOSHUA CHONG KAI REN)!");
         System.out.println("1. Login");
         System.out.println("2. Register");
         System.out.println("3. Exit");
@@ -27,8 +27,23 @@ public class Main {
 
             if (authenticatedUser != null) {
                 System.out.println("Login successful!");
-                System.out.println("Welcome, " + authenticatedUser.getUsername() + "!");
-                // You can now perform actions for the authenticated user
+                String role = authenticatedUser.getRole();
+                System.out.println("Welcome, " + username + " (" + role + ")!");
+
+                // Now, you can perform actions based on the user's role
+                if ("Admin".equals(role)) {
+                    // Execute admin functions
+                    // For example: adminFunction(authenticatedUser);
+                } else if ("Sales_Manager".equals(role)) {
+                    // Execute sales manager functions
+                    // For example: salesManagerFunction(authenticatedUser);
+                } else if ("Purchase_Manager".equals(role)) {
+                    // Execute purchase manager functions
+                    // For example: purchaseManagerFunction(authenticatedUser);
+                } else {
+                    // Handle unrecognized roles
+                    System.out.println("Unrecognized role: " + role);
+                }
             } else {
                 System.out.println("Login failed. Invalid credentials.");
             }
@@ -49,7 +64,7 @@ public class Main {
 
             System.out.println("Registration successful!");
         } else if (choice == 3) {
-            System.out.println("Exiting Purchase Order Management System. Goodbye!");
+            System.out.println("Exiting Purchase Order Management System by YAP MING SHEN. Goodbye!");
             System.exit(0);
         } else {
             System.out.println("Invalid choice. Please enter a valid option.");
