@@ -176,7 +176,8 @@ public class createPurchaseRequisition {
             if (isPurchaseRequisitionIdExists(editId)) {
                 // Load and display the existing purchase requisition details
                 String existingDetails = getPurchaseRequisitionDetails(editId);
-                System.out.println("Existing details:");
+                
+                System.out.println("Existing details(Item Code,Quantity,Required Date,Supplier Code,Unit Price,Total Price):");
                 System.out.println(existingDetails);
                 
                 // Prompt the user for changes
@@ -395,7 +396,7 @@ public class createPurchaseRequisition {
             String line;
             while ((line = purchaseRequisitionReader.readLine()) != null) {
                 // Assuming each line in PurchaseRequisition.txt contains an ID followed by other data
-                String[] parts = line.split(",", 2); // Split by whitespace, limit to 2 parts
+                String[] parts = line.split(",", 2); // Split by comma, limit to 2 parts
                 if (parts.length > 0 && parts[0].equals(id)) {
                     return parts[1]; // Return details excluding the ID
                 }
@@ -412,7 +413,7 @@ public class createPurchaseRequisition {
         String line;
         while ((line = purchaseRequisitionReader.readLine()) != null) {
             // Assuming each line in PurchaseRequisition.txt contains an ID followed by other data
-            String[] parts = line.split(","); // Split by whitespace, limit to 2 parts
+            String[] parts = line.split(","); // Split by comma, limit to 2 parts
             if (parts.length > 0 && parts[0].equals(id)) {
                 return true;
             }
