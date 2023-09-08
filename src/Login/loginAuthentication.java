@@ -7,11 +7,16 @@ import java.util.*;
 public class loginAuthentication {
     private final String FILE_PATH = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\Login\\LoginCredentials.txt";
     private List<User> users = new ArrayList<>();
+    private User currentUser;
 
     public loginAuthentication() {
         loadUsers();
     }
 
+    public User getCurrentUser(){
+        return currentUser;
+    }
+    
     private void loadUsers() {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
@@ -30,6 +35,7 @@ public class loginAuthentication {
     public User authenticateUser(String username, String password) {
         for (User user : users) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                currentUser = user; // Set the current user upon successful authentication
                 return user; // User is authenticated
             }
         }

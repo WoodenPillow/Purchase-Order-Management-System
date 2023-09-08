@@ -5,6 +5,8 @@ import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import Login.loginAuthentication;
+
 /**
  *
  * @author Joshua
@@ -12,13 +14,14 @@ import java.text.SimpleDateFormat;
 
 public class generatePurchaseOrder {
     
-    String poTextFile = ("C:\\Users\\user1\\Desktop\\APU\\Year 2 Sem 1\\Object Oriented Development with Java\\Assignment\\Assignment\\Purchase-Order-Management-System\\src\\PurchaseManager\\PurchaseOrder.txt");
-    String usersTextFile = ("C:\\Users\\user1\\Desktop\\APU\\Year 2 Sem 1\\Object Oriented Development with Java\\Assignment\\Assignment\\Purchase-Order-Management-System\\src\\Login\\LoginCredentials.txt");
-    String prTextFile = ("C:\\Users\\user1\\Desktop\\APU\\Year 2 Sem 1\\Object Oriented Development with Java\\Assignment\\Assignment\\Purchase-Order-Management-System\\src\\PurchaseManager\\PurchaseRequisition.txt");
+    private static final String poTextFile = "C:\\Users\\user1\\Desktop\\APU\\Year 2 Sem 1\\Object Oriented Development with Java\\Assignment\\Assignment\\Purchase-Order-Management-System\\src\\PurchaseManager\\PurchaseOrder.txt";
+    private static final String usersTextFile = "C:\\Users\\user1\\Desktop\\APU\\Year 2 Sem 1\\Object Oriented Development with Java\\Assignment\\Assignment\\Purchase-Order-Management-System\\src\\Login\\LoginCredentials.txt";
+    private static final String prTextFile = "C:\\Users\\user1\\Desktop\\APU\\Year 2 Sem 1\\Object Oriented Development with Java\\Assignment\\Assignment\\Purchase-Order-Management-System\\src\\SalesManager\\PurchaseRequisition.txt";
     
-    private List<String> purchaseOrderList;
+    private List<String> purchaseOrderList = new ArrayList<>();
+    private loginAuthentication authentication = new loginAuthentication();
     
-    public generatePurchaseOrder(){menu();}    
+    public generatePurchaseOrder(){}
     
     public void menu() {
         Scanner sc1 = new Scanner(System.in);
@@ -48,12 +51,13 @@ public class generatePurchaseOrder {
                         break;
 
                     default:
-                        System.out.println("Wrong Input. Please Enter Again.");
+                        System.out.println("\nWrong Input. Please Enter Again.\n");
                 }
+                
             } catch (java.util.InputMismatchException e) {
                 // Handle non-integer input
                 sc1.nextLine(); // Consume the invalid input
-                System.out.println("Invalid input. Please enter a valid option (1-4).");
+                System.out.println("\nInvalid input. Please enter a valid option (1-4).\n");
                 option = 0; // Set option to 0 to repeat the loop
             }
         } while (option < 1 || option > 4);       
@@ -65,10 +69,20 @@ public class generatePurchaseOrder {
         String pmID = "";
         
         while (true){
-            // Prompt the user to enter the new Purchase Order ID
-            System.out.println("Printing Purchase Order List...\nCurrent Purchase Order:\n");
-            System.out.print(poTextFile);
-            System.out.println("Please Enter A New Purchase Order ID: \n");
+            // Prompt the user to enter the new Purchase Order ID          
+            
+            // Read the data from the text file
+            System.out.println("\nPrinting Current Purchase Order...");
+            try (BufferedReader buffer = new BufferedReader(new FileReader(poTextFile))) {
+                String line;
+                while ((line = buffer.readLine()) != null) {
+                    System.out.println(line); // Print each line from the file
+                }
+            }catch (IOException e) {
+                System.err.println("Error reading PurchaseOrder.txt: " + e.getMessage());
+            }
+            
+            System.out.println("\nPlease Enter A New Purchase Order ID: \n");
             newPOID = sc1.next();
             
             boolean isUnique =  true;
@@ -86,7 +100,7 @@ public class generatePurchaseOrder {
             
             if(isUnique){
                 // Add the new Purchase Order ID to the list since it's unique
-                System.out.println("Purchase Order ID added successfully.\n");
+                System.out.println("\nPurchase Order ID added successfully.\n");
                 System.out.println("Proceed to next step...\n");
                 break;
             }
@@ -99,33 +113,38 @@ public class generatePurchaseOrder {
         // Parse the date string to a Date object
         Date poDate = parseDate(enterDate);
         
-        // Prompt the user to enter purchase manager ID
-        boolean isValidPMID = false;
-        
-        while (!isValidPMID) {
-            System.out.println("Printing Users List...\n");
-            System.out.print(usersTextFile);
-            System.out.println("Please Enter Purchase Manager ID. \n");
-            pmID = sc1.next();
-            
-            // Proceed To Check If The Input Exists In 'Users.txt' File
-            if (isPurchaseManagerIDExists(pmID)) {
-                System.out.println("Proceed To Next Step...\n");
-                isValidPMID = true; // Set to true to exit the loop when valid input is provided
-            } else {
-                System.out.println("Error: Purchase Manager Not Found.");
+        // System will automatically get the current purchase manager
+        if (authentication.getCurrentUser() != null) {
+                // You have access to the current user here
+                String currentRole = authentication.getCurrentUser().getRole();
+                if ("Purchase_Manager".equals(currentRole)) {
+                    // Current user is Purchase Manager
+                    String currentUserID = authentication.getCurrentUser().getUserID();
+                    System.out.println("\nCurrent Purchase Manager ID: " + currentUserID);
+                }
             }
-        }
+        
+        System.out.println("Proceed To Next Step...\n");
         
         // Prompt the user to enter purchase requistion ID
+        System.out.println("Printing Purchase Requisition List...\n");
+
+        // Read the data from the text file
+        try (BufferedReader buffer = new BufferedReader(new FileReader(prTextFile))) {
+            String line;
+            while ((line = buffer.readLine()) != null) {
+                System.out.println(line); // Print each line from the file
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+            
         boolean isValidPRID = false;
         
         while (!isValidPRID){
-            System.out.println("Printing Purchase Requisition List...\n");
-            System.out.print(prTextFile);
             System.out.println("Please Enter Purchase Requisition ID: \n");
             String prID = sc1.next();
-            
+                
             // Proceed To Check If The Input Exists In 'PurchaseRequisition.txt' File
             if (isPurchaseRequisitionIDExists(prID)){
                 // Retrieve All The Corresponding Data from 'PurchaseRequisition.txt' File
@@ -160,7 +179,7 @@ public class generatePurchaseOrder {
                         purchaseOrderList.add(newPurchaseOrder);
         
                         //Save Purchase Order List Into Text File
-                        savePO(purchaseOrderList,"PurchaseOrderList");
+                        savePO();
                         break;
                     }
                     else{
@@ -176,116 +195,121 @@ public class generatePurchaseOrder {
     
     public void editPO() {
         Scanner sc1 = new Scanner(System.in);
-
-        // Prompt the user to enter the Purchase Order ID to edit
+        
+        do{
+            // Prompt the user to enter the Purchase Order ID to edit
         System.out.println("Printing Purchase Order List...\nCurrent Purchase Order:\n");
-        System.out.print(poTextFile);
+        System.out.println(purchaseOrderList);
         System.out.println("Please Enter the Purchase Order ID to Edit: \n");
         String editPOID = sc1.next();
 
         boolean isFound = false;
 
-        // Loop through the existing purchase orders to find the one to edit
-        for (int i = 0; i < purchaseOrderList.size(); i++) {
-            String purchaseOrder = purchaseOrderList.get(i);
-            String[] columns = purchaseOrder.split(",");
+        while(!isFound){
+            // Loop through the existing purchase orders to find the one to edit
+            for (int i = 0; i < purchaseOrderList.size(); i++) {
+                String purchaseOrder = purchaseOrderList.get(i);
+                String[] columns = purchaseOrder.split(",");
 
-            if (columns.length > 0 && columns[0].equals(editPOID)) {
-                isFound = true;
-                System.out.println("Purchase Order Found. Current Details:");
+                if (columns.length > 0 && columns[0].equals(editPOID)) {
+                    isFound = true;
+                    System.out.println("Purchase Order Found. Current Details:");
 
-                // Print the current purchase order details
-                System.out.println("Purchase Order ID: " + columns[0]);
-                System.out.println("Purchase Order Date: " + columns[1]);
-                System.out.println("Purchase Manager ID: " + columns[2]);
-                System.out.println("Purchase Requisition ID: " + columns[3]);
-                System.out.println("Item ID: " + columns[4]);
-                System.out.println("Item Quantity: " + columns[5]);
-                System.out.println("Unit Price: " + columns[6]);
-                System.out.println("Total Price: " + columns[7]);
-                System.out.println("Supplier ID: " + columns[8]);
+                    // Print the current purchase order details
+                    System.out.println("Purchase Order ID: " + columns[0]);
+                    System.out.println("Purchase Order Date: " + columns[1]);
+                    System.out.println("Purchase Manager ID: " + columns[2]);
+                    System.out.println("Purchase Requisition ID: " + columns[3]);
+                    System.out.println("Item ID: " + columns[4]);
+                    System.out.println("Item Quantity: " + columns[5]);
+                    System.out.println("Unit Price: " + columns[6]);
+                    System.out.println("Total Price: " + columns[7]);
+                    System.out.println("Supplier ID: " + columns[8]);
 
-                // Prompt the user for editing options
-                System.out.println("Select What You Want to Edit:");
-                System.out.println("1. Purchase Order Date");
-                System.out.println("2. Purchase Manager ID");
-                System.out.println("3. Item Quantity");
-                System.out.println("4. Exit (No Changes)");
+                    // Prompt the user for editing options
+                    System.out.println("Select What You Want to Edit:");
+                    System.out.println("1. Purchase Order Date");
+                    System.out.println("2. Purchase Manager ID");
+                    System.out.println("3. Item Quantity");
+                    System.out.println("4. Exit (No Changes)");
 
-                int editOption = sc1.nextInt();
+                    int editOption = sc1.nextInt();
 
-                switch (editOption) {
-                    case 1:
-                        // Edit Purchase Order Date
-                        System.out.println("Enter New Purchase Order Date (yyyy-MM-dd): ");
-                        String newDateStr = sc1.next();
-                        Date newDate = parseDate(newDateStr);
+                    switch (editOption) {
+                        case 1:
+                            // Edit Purchase Order Date
+                            System.out.println("Enter New Purchase Order Date (yyyy-MM-dd): ");
+                            String newDateStr = sc1.next();
+                            Date newDate = parseDate(newDateStr);
                     
-                        if (newDate != null) {
-                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                            columns[1] = dateFormat.format(newDate);
-                            System.out.println("Purchase Order Date updated successfully.");
-                        } else {
-                            System.out.println("Invalid date format. Date not updated.");
-                        }
-                        break;
+                            if (newDate != null) {
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                columns[1] = dateFormat.format(newDate);
+                                System.out.println("Purchase Order Date updated successfully.");
+                            } else {
+                                System.out.println("Invalid date format. Date not updated.");
+                            }
+                            break;
 
-                    case 2:
-                        // Edit Purchase Manager ID
-                        System.out.println("Enter New Purchase Manager ID: ");
-                        String newPMID = sc1.next();
-                        // Check if the new PMID exists in the users list
-                        if (isPurchaseManagerIDExists(newPMID)) {
-                            columns[2] = newPMID;
-                            System.out.println("Purchase Manager ID updated successfully.");
-                        } else {
-                            System.out.println("Error: Purchase Manager Not Found.");
-                        }
-                        break;
+                        case 2:
+                            // Edit Purchase Manager ID
+                            System.out.println("Enter New Purchase Manager ID: ");
+                            String newPMID = sc1.next();
+                            // Check if the new PMID exists in the users list
+                            if (isPurchaseManagerIDExists(newPMID)) {
+                                columns[2] = newPMID;
+                                System.out.println("Purchase Manager ID updated successfully.");
+                            } else {
+                                System.out.println("Error: Purchase Manager Not Found.");
+                            }
+                            break;
 
-                    case 3:
-                        // Edit Item Quantity
-                        System.out.println("Enter New Item Quantity: ");
-                        int newQuantity = sc1.nextInt();
-                        columns[5] = String.valueOf(newQuantity);
-                        double newTotalPrice = newQuantity * Double.parseDouble(columns[6]);
-                        columns[7] = String.valueOf(newTotalPrice);
-                        System.out.println("Item Quantity and Total Price updated successfully.");
-                        break;
+                        case 3:
+                            // Edit Item Quantity
+                            System.out.println("Enter New Item Quantity: ");
+                            int newQuantity = sc1.nextInt();
+                            columns[5] = String.valueOf(newQuantity);
+                            double newTotalPrice = newQuantity * Double.parseDouble(columns[6]);
+                            columns[7] = String.valueOf(newTotalPrice);
+                            System.out.println("Item Quantity and Total Price updated successfully.");
+                            break;
 
-                    case 4:
-                        System.out.println("No Changes Made.");
-                        break;
+                        case 4:
+                            System.out.println("No Changes Made.");
+                            break;
 
-                    default:
-                        System.out.println("Invalid option. No Changes Made.");
-                        break;
+                        default:
+                            System.out.println("Invalid option. No Changes Made.");
+                            break;
+                    }
+                        // Update the edited purchase order details
+                    String updatedPurchaseOrder = String.join(",", columns);
+                    purchaseOrderList.set(i, updatedPurchaseOrder);
+
+                    // Save the updated purchase order list into the text file
+                    savePO();
+                    break; // Exit the loop after editing the purchase order
                 }
-
-                // Update the edited purchase order details
-                String updatedPurchaseOrder = String.join(",", columns);
-                purchaseOrderList.set(i, updatedPurchaseOrder);
-
-                // Save the updated purchase order list into the text file
-                savePO(purchaseOrderList, "PurchaseOrderList.txt");
-                break; // Exit the loop after editing the purchase order
+            }
+            if (!isFound) {
+                System.out.println("Error: Purchase Order ID not found.");
+                editPOID = sc1.next();
             }
         }
-
-        if (!isFound) {
-            System.out.println("Error: Purchase Order ID not found.");
-        }
+        }while(false);
+                
     }
     
     public void deletePO(){
-        System.out.print(poTextFile);//To Let User Know What Purchase Order Exists
+        System.out.println(purchaseOrderList);//To Let User Know What Purchase Order Exists
         
         Scanner sc1 = new Scanner(System.in);
         System.out.println("Enter the Purchase Order ID you want to delete: ");
         String input = sc1.next();
         boolean found = false;
 
-        for (int i = 0; i < purchaseOrderList.size(); i++) {
+        do{
+            for (int i = 0; i < purchaseOrderList.size(); i++) {
             String item = purchaseOrderList.get(i);
             String[] columns = item.split(",");
 
@@ -296,40 +320,44 @@ public class generatePurchaseOrder {
                 // Remove the item from the list
                 purchaseOrderList.remove(i);
                 
-                savePO(purchaseOrderList,"PurchaseOrder.txt");
+                savePO();
                 return; // Exit the loop after deleting the item
+                }
             }
-        }
-
-        if (!found) {
-            System.out.println("Error: Purchase Order not found in the file.");
-        }  
+            
+            if (!found) {
+                System.out.println("Error: Purchase Order not found in the file.");
+                input = sc1.next();
+            }  
+        }while(false);
     }
     
     //Save Data Into File
-    public void savePO(List<String> purchaseOrderList, String fileName) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+    public void savePO() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(poTextFile))) {
             for (String entry : purchaseOrderList) {
                 writer.write(entry);
                 writer.newLine(); // Add a newline after each entry
             }
-            System.out.println("Data Is Successfully Saved To " + fileName);
+            System.out.println("Data Is Successfully Saved To " + poTextFile);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Error: Failed to save data to " + fileName);
+            System.out.println("Error: Failed to save data to " + poTextFile);
         }
     }
-    
  
+    
     // Function to check if the Purchase Manager ID exists in 'LoginCredentials.txt'
-    private boolean isPurchaseManagerIDExists(String pmID) {        
-        try (BufferedReader fileReader = new BufferedReader(new FileReader(usersTextFile))) {
+    private boolean isPurchaseManagerIDExists(String pmID) {
+        try {
+            BufferedReader fileReader = new BufferedReader(new FileReader(usersTextFile));
             String line;
             while ((line = fileReader.readLine()) != null) {
                 // Split the line by comma to extract the user ID
                 String[] columns = line.split(",");
-                if (columns.length > 0 && columns[0].equals(pmID)) {
-                    // If a match is found, return true
+                if (columns.length >= 4 && columns[0].equals(pmID) && columns[3].equals("Purchase_Manager" )) {
+                    System.out.println("Purchase Manager ID found.");
+                    // If a match is found and the purchase manager is match and the role is 'Purchase_Manager', return true
                     return true;
                 }
             }
@@ -337,21 +365,23 @@ public class generatePurchaseOrder {
             e.printStackTrace();
         }
 
-        // If no match is found, return false
+        // If no match is found or the role is not 'Purchase_Manager', return false
         return false;
     }
     
     // Function to check if a Purchase Requistion ID exists in the text file
     private boolean isPurchaseRequisitionIDExists (String prID) {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("PurchaseRequistion.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(prTextFile));
             String line;
 
             while ((line = reader.readLine()) != null) {
                 // Check if the line from the text file matches the input
-                if (line.equals(prID)) {
-                    reader.close();
-                    return true; // Input exists in the text file
+                String[] parts = line.split(",");
+                
+                if (parts.length > 0 && parts[0].equals(prID)) {
+                reader.close();
+                return true; // Input exists in the text file
                 }
             }
             reader.close();
@@ -371,7 +401,9 @@ public class generatePurchaseOrder {
             while ((line = fileReader.readLine()) != null) {
                 String[] columns = line.split(",");
                 if (columns.length > 0 && columns[0].equals(prID)) {
+                    fileReader.close();
                     return line;
+                    
                 }
             }
         } catch (IOException e) {
@@ -410,5 +442,4 @@ public class generatePurchaseOrder {
 
         return parsedDate;
     }
-
 }
