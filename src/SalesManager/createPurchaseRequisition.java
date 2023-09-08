@@ -6,7 +6,6 @@ package SalesManager;
 
 import java.util.*;
 import java.io.*;
-import Administrator.fileHandler;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.regex.*;
@@ -16,14 +15,11 @@ import java.util.regex.*;
  * @author Oscar
  */
 public class createPurchaseRequisition {
-    private fileHandler obj1 = new fileHandler();
-    private List <String> PurchaseRequisitionList;
     private String requisitionID;
     private String itemCode;
-    private int itemQuantity;
     private double totalPrice;
-    private String readfile1 = "/C:/Users/user/Desktop/Uni Stuff/Year 2 Semester 1/OODJ/Assignment/Purchase-Order-Management-System/src/SalesManager/Item.txt/";
-    private String readfile2 = "/C:/Users/user/Desktop/Uni Stuff/Year 2 Semester 1/OODJ/Assignment/Purchase-Order-Management-System/src/SalesManager/PurchaseRequisition.txt";
+    private String FILE_PATH1 = "/C:/Users/user/Desktop/Uni Stuff/Year 2 Semester 1/OODJ/Assignment/Purchase-Order-Management-System/Purchase-Order-Management-System/src/SalesManager/Item.txt/";
+    private String FILE_PATH2 = "/C:/Users/user/Desktop/Uni Stuff/Year 2 Semester 1/OODJ/Assignment/Purchase-Order-Management-System/Purchase-Order-Management-System/src/SalesManager/PurchaseRequisition.txt/";
     private int quantityRequired;
     private String requiredDate;
     private String supplierCode;
@@ -66,7 +62,7 @@ public class createPurchaseRequisition {
     
     public void addPR(){
         System.out.println("Printing Item List...");
-        try (BufferedReader reader = new BufferedReader(new FileReader(readfile1))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH1))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 System.out.println(line); // Print each line from the file
@@ -74,19 +70,19 @@ public class createPurchaseRequisition {
         } catch (IOException e) {
             e.printStackTrace();
         }
-            try (BufferedReader purchaseRequisitionReader = new BufferedReader(new FileReader(readfile2))) {
+            try (BufferedReader purchaseRequisitionReader = new BufferedReader(new FileReader(FILE_PATH2))) {
             BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
             while (true){
             System.out.println("Enter an ID for the purchase requisition:");
-            String userEnteredId = inputReader.readLine();
-            if (userEnteredId.matches("\\d+")) {
-                int purchaseRequisitionId = Integer.parseInt(userEnteredId);
+            requisitionID = inputReader.readLine();
+            if (requisitionID.matches("\\d+")) {
+                int purchaseRequisitionId = Integer.parseInt(requisitionID);
                 String line;
                 boolean idExists = false;
             while ((line = purchaseRequisitionReader.readLine()) != null) {
-                // Assuming each line in PurchaseRequisition.txt contains an ID followed by other data
-                String[] parts = line.split(","); // Split by whitespace
-                if (parts.length > 0 && parts[0].equals(userEnteredId)) {
+                // each line in PurchaseRequisition.txt contains an ID followed by other data
+                String[] parts = line.split(","); // Split by comma
+                if (parts.length > 0 && parts[0].equals(requisitionID)) {
                     idExists = true;
                     break;
                 }
@@ -96,21 +92,20 @@ public class createPurchaseRequisition {
                 System.out.println("ID already exists in Purchase Requisition. Please try again.");
             } else {
                 System.out.println("ID does not exist in Purchase Requisition. You can proceed to add it.");
-                String userEnteredItemCode;
                 boolean isValidItemCode = false;
                 while (!isValidItemCode) {
                     System.out.println("Enter an item code from the item list (e.g., I0001):");
-                    userEnteredItemCode = inputReader.readLine();
+                    itemCode = inputReader.readLine();
 
                 // Check if the entered item code matches the expected format
-                if (isValidItemCode(userEnteredItemCode)) {
-                    if (isItemCodeExists(userEnteredItemCode)) {
+                if (isValidItemCode(itemCode)) {
+                    if (isItemCodeExists(itemCode)) {
                             isValidItemCode = true;
                             System.out.println("Item code is in the correct format and exists in the item list.");
                             
-                            String[] itemDetails = getItemDetails(userEnteredItemCode);
+                            String[] itemDetails = getItemDetails(itemCode);
                             if (itemDetails != null) {
-                                unitPrice = Double.parseDouble(itemDetails[2]); // Assuming unit price is in the third column
+                                unitPrice = Double.parseDouble(itemDetails[2]); // unit price is in the third column
                                 supplierCode = itemDetails[4];
                                 
                              while (true) {
@@ -126,12 +121,12 @@ public class createPurchaseRequisition {
                             }
 
                             System.out.println("Enter the required date (e.g., YYYY-MM-DD):");
-                            String requiredDate = inputReader.readLine();
+                            requiredDate = inputReader.readLine();
                             
-                            double totalPrice = quantityRequired * unitPrice;
+                            totalPrice = quantityRequired * unitPrice;
                             
-                            String purchaseRequisitionDetails = userEnteredItemCode + "," + quantityRequired + "," + requiredDate + "," + supplierCode + "," + unitPrice + "," + totalPrice;
-                            savePurchaseRequisition(userEnteredId, purchaseRequisitionDetails);
+                            String purchaseRequisitionDetails = itemCode + "," + quantityRequired + "," + requiredDate + "," + supplierCode + "," + unitPrice + "," + totalPrice;
+                            savePurchaseRequisition(requisitionID, purchaseRequisitionDetails);
                             System.out.println("Purchase requisition details saved successfully.");
                         }
                     }else {
@@ -155,11 +150,11 @@ public class createPurchaseRequisition {
     }
     
     public void editPR(){
-        try (BufferedReader purchaseRequisitionReader = new BufferedReader(new FileReader(readfile2))) {
+        try (BufferedReader purchaseRequisitionReader = new BufferedReader(new FileReader(FILE_PATH2))) {
         System.out.println("Existing Purchase Requisition IDs:");
         String line;
         while ((line = purchaseRequisitionReader.readLine()) != null) {
-            // Assuming each line in PurchaseRequisition.txt contains information in the specified comma-separated format
+            // each line in PurchaseRequisition.txt contains information in the specified comma-separated format
             String[] parts = line.split(",");
             if (parts.length >= 7) {
                 String purchaseRequisitionId = parts[0];
@@ -200,6 +195,7 @@ public class createPurchaseRequisition {
                 String[] parts = existingDetails.split(",");
                 double newTotalPrice = newQuantity * Double.parseDouble(parts[4]);
                 System.out.println(newTotalPrice);
+                
                 // Update the details string with the new values
                 String updatedDetails = updatePurchaseRequisitionDetails(existingDetails, newQuantity, newRequiredDate, newTotalPrice);
 
@@ -207,7 +203,7 @@ public class createPurchaseRequisition {
                 saveUpdatedPurchaseRequisition(editId, updatedDetails);
                 System.out.println("Purchase requisition details updated successfully.");
             } else {
-                System.out.println("ID does not exist in Purchase Requisition.");
+                System.out.println("ID does not exist in Purchase Requisition.\nExiting...");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -215,11 +211,11 @@ public class createPurchaseRequisition {
     }
     
     public void deletePR(){
-    try (BufferedReader purchaseRequisitionReader = new BufferedReader(new FileReader(readfile2))) {
+    try (BufferedReader purchaseRequisitionReader = new BufferedReader(new FileReader(FILE_PATH2))) {
         System.out.println("Existing Purchase Requisition IDs:");
         String line;
         while ((line = purchaseRequisitionReader.readLine()) != null) {
-            // Assuming each line in PurchaseRequisition.txt contains information in the specified comma-separated format
+            // each line in PurchaseRequisition.txt contains information in the specified comma-separated format
             String[] parts = line.split(",");
             if (parts.length >= 7) {
                 String purchaseRequisitionId = parts[0];
@@ -237,37 +233,38 @@ public class createPurchaseRequisition {
             System.out.println("Enter the ID of the purchase requisition you want to edit:");
             String deleteId = inputReader.readLine();
             if (isPurchaseRequisitionIdExists(deleteId)) {
-                try (BufferedReader purchaseRequisitionReader = new BufferedReader(new FileReader(readfile2))) {
-        String line;
-        StringBuilder newContent = new StringBuilder(); // To store the new content
+                try (BufferedReader purchaseRequisitionReader = new BufferedReader(new FileReader(FILE_PATH2))) {
+                    String line;
+                    StringBuilder newContent = new StringBuilder(); // To store the new content
 
-        while ((line = purchaseRequisitionReader.readLine()) != null) {
-            // Assuming each line in PurchaseRequisition.txt contains information in the specified comma-separated format
-            String[] parts = line.split(",");
+                    while ((line = purchaseRequisitionReader.readLine()) != null) {
+                    // each line in PurchaseRequisition.txt contains information in the specified comma-separated format
+                    String[] parts = line.split(",");
 
-            if (parts.length >= 1) {
-                String purchaseRequisitionId = parts[0];
+                    if (parts.length >= 1) {
+                    String purchaseRequisitionId = parts[0];
 
-                // Check if the current line matches the ID to be deleted
-                if (purchaseRequisitionId.equals(deleteId)) {
-                    continue; // Skip this line, effectively deleting it
+                    // Check if the current line matches the ID to be deleted
+                    if (purchaseRequisitionId.equals(deleteId)) {
+                        continue; // Skip this line, effectively deleting it
+                    }
                 }
-            }
 
             // Append the line to the new content
             newContent.append(line).append(System.lineSeparator());
         }
 
         // Write the new content back to the file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(readfile2))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH2))) {
             writer.write(newContent.toString());
         }
 
         System.out.println("Purchase requisition with ID " + deleteId + " deleted successfully.");
-    } catch (IOException e) {
+        } catch (IOException e) {
         e.printStackTrace();
-    }
-            }
+        }
+       }else{
+        System.out.println("Purchase requisition with ID " + deleteId + " does not exist.\nExiting...");               }
     }catch (IOException e) {
         e.printStackTrace();
     }
@@ -275,14 +272,16 @@ public class createPurchaseRequisition {
     
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Helper Methods    
+    
+    // Check if the item code matches the pattern "I" followed by four digits
     private boolean isValidItemCode(String itemCode) {
-        // Check if the item code matches the pattern "I" followed by four digits
         return itemCode.matches("I\\d{4}");
     }  
     
+    // Check if the item code exists in the item list
     private boolean isItemCodeExists(String itemCode) {
         List<String> itemCodes = new ArrayList<>();
-        try (BufferedReader itemReader = new BufferedReader(new FileReader(readfile1))) {
+        try (BufferedReader itemReader = new BufferedReader(new FileReader(FILE_PATH1))) {
             String itemLine;
             while ((itemLine = itemReader.readLine()) != null) {
                 String[] itemParts = itemLine.split(",");
@@ -299,8 +298,9 @@ public class createPurchaseRequisition {
         return false;
     }
     
-     private String[] getItemDetails(String itemCode) {
-        try (BufferedReader itemReader = new BufferedReader(new FileReader(readfile1))) {
+    // get the item details from item list file
+    private String[] getItemDetails(String itemCode) {
+        try (BufferedReader itemReader = new BufferedReader(new FileReader(FILE_PATH1))) {
             String itemLine;
             while ((itemLine = itemReader.readLine()) != null) {
                 String[] itemParts = itemLine.split(",");
@@ -314,8 +314,9 @@ public class createPurchaseRequisition {
         return null;
     }
      
-      private void savePurchaseRequisition(String id, String details) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(readfile2, true))) {
+    // save for purchase requisition
+     private void savePurchaseRequisition(String id, String details) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH2, true))) {
             // Append the new purchase requisition details to the file
             writer.write(id + "," + details);
             writer.newLine();
@@ -323,8 +324,9 @@ public class createPurchaseRequisition {
             e.printStackTrace();
         }
     }
-      
-      private int parseQuantity(String details) {
+    
+    // extracts and parses the quantity value from a comma-separated string
+     private int parseQuantity(String details) {
         String[] parts = details.split(",");
         if (parts.length >= 2) {
             try {
@@ -336,6 +338,7 @@ public class createPurchaseRequisition {
         return 0;
     }
       
+    // extracts and returns the required date from a comma-separated string.
       private String parseRequiredDate(String details) {
         String[] parts = details.split(",");
         if (parts.length >= 3) {
@@ -344,6 +347,7 @@ public class createPurchaseRequisition {
         return "";
     }
       
+      // update purchase requisition details when user edit
       private String updatePurchaseRequisitionDetails(String existingDetails, int newQuantity, String newRequiredDate, double newTotalPrice) {
         String[] parts = existingDetails.split(",");
         if (parts.length >= 2) {
@@ -358,10 +362,12 @@ public class createPurchaseRequisition {
         return String.join(",", parts);
     }
       
+      
+      // save the final changes of user edit in purchase requisition
       private void saveUpdatedPurchaseRequisition(String id, String updatedDetails) {
         try {
             List<String> lines = new ArrayList<>();
-            try (BufferedReader reader = new BufferedReader(new FileReader(readfile2))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH2))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     if (line.startsWith(id + ",")) {
@@ -372,7 +378,7 @@ public class createPurchaseRequisition {
                 }
             }
 
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(readfile2))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH2))) {
                 for (String line : lines) {
                     writer.write(line);
                     writer.newLine();
@@ -383,8 +389,9 @@ public class createPurchaseRequisition {
         }
     }
       
+      // get purchase requisition details based on specific id
       private String getPurchaseRequisitionDetails(String id) {
-        try (BufferedReader purchaseRequisitionReader = new BufferedReader(new FileReader(readfile2))) {
+        try (BufferedReader purchaseRequisitionReader = new BufferedReader(new FileReader(FILE_PATH2))) {
             String line;
             while ((line = purchaseRequisitionReader.readLine()) != null) {
                 // Assuming each line in PurchaseRequisition.txt contains an ID followed by other data
@@ -399,8 +406,9 @@ public class createPurchaseRequisition {
         return "";
     }
       
+    // Check if the purchase requisition id is exists
       private boolean isPurchaseRequisitionIdExists(String id) {
-    try (BufferedReader purchaseRequisitionReader = new BufferedReader(new FileReader(readfile2))) {
+        try (BufferedReader purchaseRequisitionReader = new BufferedReader(new FileReader(FILE_PATH2))) {
         String line;
         while ((line = purchaseRequisitionReader.readLine()) != null) {
             // Assuming each line in PurchaseRequisition.txt contains an ID followed by other data

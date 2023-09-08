@@ -1,15 +1,17 @@
-package SalesManager;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package PurchaseManager;
+import java.io.*;
+import java.util.*;
+/**
+ *
+ * @author Oscar
+ */
 public class displayRequisition {
-    private String FILE_PATH = "/C:/Users/user/Desktop/Uni Stuff/Year 2 Semester 1/OODJ/Assignment/Purchase-Order-Management-System/Purchase-Order-Management-System/src/SalesManager/PurchaseRequisition.txt/";
-    
+    private static final String FILE_PATH = "/C:/Users/user/Desktop/Uni Stuff/Year 2 Semester 1/OODJ/Assignment/Purchase-Order-Management-System/Purchase-Order-Management-System/src/SalesManager/PurchaseRequisition.txt/";
+
 public void displayPurchaseRequisitions() {
     try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
         String line;
