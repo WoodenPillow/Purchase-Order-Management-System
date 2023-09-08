@@ -15,141 +15,165 @@ public class DailyItemWiseSalesEntry {
     String salesEntryTextFile = "C:\\Users\\user1\\Desktop\\APU\\Year 2 Sem 1\\Object Oriented Development with Java\\Assignment\\Assignment\\Purchase-Order-Management-System\\src\\SalesManager\\SalesEntry.txt";
     List <String> salesEntryList = new ArrayList<>();
     
+    
     public DailyItemWiseSalesEntry(){menu();}
     
+    public static void main(String args[]){
+        DailyItemWiseSalesEntry obj1 = new DailyItemWiseSalesEntry();
+        obj1.menu();
+    }
     public void menu() {
-        Scanner sc1 = new Scanner(System.in);
-        int option;
-        
-        do{
-            System.out.println("Welcome To Daily Item-Wise Sales Entry Management. \nPlease Select An Option. \n1. Add \n2. Edit \n3. Delete \n4. Exit\n");
-            option = sc1.nextInt();
-            
-            switch (option){
-                case 1: 
+    Scanner sc1 = new Scanner(System.in);
+
+    while (true) {
+        System.out.println("Welcome To Daily Item-Wise Sales Entry Management. \nPlease Select An Option. \n1. Add \n2. Edit \n3. Delete \n4. Exit\n");
+
+        try {
+            int option = sc1.nextInt();
+            switch (option) {
+                case 1:
                     addDIWSE();
                     break;
-                
+
                 case 2:
                     editDIWSE();
                     break;
-               
+
                 case 3:
                     deleteDIWSE();
                     break;
-                    
+
                 case 4:
                     System.out.println("Exiting...");
-                    return;
-                    
+                    System.exit(0); // Exit the entire program
+                    break;
+
                 default:
                     System.out.println("Wrong Input. Please Enter Again.");
             }
-        }while (option < 1 || option > 4);        
-    }
-
-    public void addDIWSE(){
-        
-        try (BufferedReader reader = new BufferedReader(new FileReader(itemTextFile))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line); // Print each line from the file
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (java.util.InputMismatchException e) {
+            // Handle non-integer input
+            sc1.nextLine(); // Consume the invalid input
+            System.out.println("\nInvalid input. Please enter a valid option (1-4).\n");
         }
+    }
+}
+
+        public void addDIWSE(){
+
+            Scanner sc1 = new Scanner(System.in);
+            boolean found = false;
+
+            List <String> itemTextList = new ArrayList<>();
             
-        Scanner sc1 = new Scanner(System.in);
-        boolean found = false;
-
-        do {
-            System.out.println("Please Enter The Item Code You Want To Add: ");
-            String input = sc1.next();
-    
-            // Assume the data structure like a list to store file contents
-            List<String> itemTextList = new ArrayList<>(); // Initialize your list
-
-            // Now we need to read the file into itemTextList
-
-            // Read the file into itemTextList
-            try (BufferedReader fileReader = new BufferedReader(new FileReader(itemTextFile))) {
+            // Read the data from the text file
+            System.out.println("\nPrinting Items...");
+            try (BufferedReader buffer = new BufferedReader(new FileReader(itemTextFile))) {
                 String line;
-                while ((line = fileReader.readLine()) != null) {
-                    itemTextList.add(line);
+                while ((line = buffer.readLine()) != null) {
+                    System.out.println(line);
+                    itemTextList.add(line); // Print each line from the file
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            }catch (IOException e) {
+                System.err.println("Error reading Item.txt: " + e.getMessage());
+            }     
 
-            for (String item : itemTextList) {
-                String[] columns = item.split(",");
+            do {
+                System.out.println("Please Enter The Item Code You Want To Add: ");
+                String input = sc1.next();
 
-                if (columns.length > 0 && columns[0].equals(input)) {
-                    found = true;
-                    System.out.println("Item That You Want: ");
-                    System.out.println("Item Code: " + columns[0]);
-                    System.out.println("Item Name: " + columns[1]);
-                    System.out.println("Item Price: " + columns[2]);
-                    System.out.println("Supplier ID: " + columns[4]);
+                for (String item : itemTextList) {
+                    String[] columns = item.split(",");
 
-                    // Prompt the user to enter date in  specific format
-                    System.out.println("Please Enter The Date (in yyyy-MM-dd format): ");
-                    String date = sc1.next();
-                    // Parse the date string to a Date object
-                    Date Date = parseDate(date);
-                    
-                    // quantity
-                    int quantitySold;
-                    
-                    do {
-                        System.out.println("Please Enter The Quantity That Has Sold: ");
-                        String inputQuantity = sc1.next();
-                        
-                        try {
-                            quantitySold = Integer.parseInt(inputQuantity);
-                            if (quantitySold <= 0) {
-                                System.out.println("Please Enter A Valid Positive Integer Number.");
-                            } else if (quantitySold > Integer.parseInt(columns[3])) {
-                                System.out.println("Input Error: Quantity sold cannot exceed the available quantity.");
+                    if (columns.length > 0 && columns[0].equals(input)) {
+                        found = true;
+                        System.out.println("Item Code: " + columns[0]);
+                        System.out.println("Item Name: " + columns[1]);
+                        System.out.println("Item Price: " + columns[2]);
+                        System.out.println("Item Quantity: " + columns[3]);
+                        System.out.println("Supplier ID: " + columns[4]);
+
+                        // Prompt the user to enter date in  specific format
+                        System.out.println("Please Enter The Date (in yyyy-MM-dd format): ");
+                        String date = sc1.next();
+                        // Parse the date string to a Date object
+                        Date Date = parseDate(date);
+
+                        int quantitySold; // Declare quantitySold 
+
+                        double totalSales = 0.0; // Initialize totalSales to 0.0
+
+                        // Parse the price as a double
+                        double itemPrice = Double.parseDouble(columns[2]);
+
+                        do {
+                            System.out.println("Please Enter The Quantity That Has Sold: ");
+
+                            if (sc1.hasNextInt()) {
+                                quantitySold = sc1.nextInt();
+                                sc1.nextLine(); // Consume the newline character
+                                int availableQuantity = Integer.parseInt(columns[3]);
+
+                                if (quantitySold <= 0) {
+                                    System.out.println("Please Enter A Valid Positive Integer Number.");
+                                } else if (quantitySold > availableQuantity) {
+                                    System.out.println("Input Error: Quantity sold cannot exceed the available quantity.");
+                                    quantitySold = -1;
+                                } else {
+                                // Exit the loop when a valid quantity is provided
+                                totalSales = itemPrice * quantitySold;
+                                totalSales += totalSales;
+                                break;
+                                }
+                            } else {
+                                System.out.println("Invalid input. Please enter a valid positive integer.");
+                                sc1.nextLine(); // Consume the invalid input
                                 quantitySold = -1; // Set an invalid value to continue the loop
                             }
-                        } catch (NumberFormatException e) {
-                            System.out.println("Invalid input. Please enter a valid positive integer.");
-                            quantitySold = -1; // Set an invalid value to continue the loop
-                        }
-                    } while (quantitySold <= 0);               
+                        } while (quantitySold <= 0);
+                        System.out.println("Quantity Sold: " + quantitySold);
+                        System.out.println("Total Sales: " + totalSales);
 
-                    // totalSales
-                    double totalSales = Integer.parseInt(columns[2]) * quantitySold;
-                    System.out.println("\nTotal Sales: " + totalSales + "\n");
-                   
-                    String salesEntry = "Item Code: " + columns[0] + ",Item Name: " + columns[1] + ",Item Price: " + columns[2] + ",Item Quantity Sold: " + quantitySold + ",Date: " + Date + ",Supplier ID: " + columns[4] + ",Total Sales: " + totalSales + "\n";
-                    System.out.println(salesEntry);
-                    salesEntryList.add(salesEntry);
-            
-                    // Save Updated Data Into Text File
-                    saveDIWSE(salesEntryList, "SalesEntry.txt");
-            
-                    // Exit the loop when a valid item is found
-                    break;
+                        String salesEntry = columns[0] + "," + columns[1] + "," + columns[2] + "," + quantitySold + "," + Date + "," + columns[4] + "," + totalSales;
+                        System.out.println(salesEntry);
+                        salesEntryList.add(salesEntry);
+
+                        // Save Updated Data Into Text File
+                        saveDIWSE();
+
+                        // Exit the loop when a valid item is found
+                        break;
+                    }
                 }
-            }
-    
-            if(!found) {
-                System.out.println("Error: Item Code not found in the file. (You Are Only Able To Edit Date And Quantity Sold.)\n");
-            }
-        } while (!found); // Continue looping until a valid item is found        
-    }
+
+                if(!found) {
+                    System.out.println("Error: Item Code not found in the file.\n");
+                }
+            } while (!found); // Continue looping until a valid item is found        
+        }
         
     public void editDIWSE(){
     
         Scanner sc1 = new Scanner(System.in);
         boolean found = false;
     
+        System.out.println("Printing Item List...");
+        boolean fileIsEmpty = true; // Track if the sales entry file is empty
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(salesEntryTextFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line); // Print each line from the file
+                fileIsEmpty = false; // File is not empty if we found at least one line
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+            
         do {
             System.out.println("Enter the Item Code you want to edit: ");
             String editItemCode = sc1.next();
-        
+            
             // Check if the entered item code exists in the salesEntryList
             for (int i = 0; i < salesEntryList.size(); i++) {
                 String salesEntry = salesEntryList.get(i);
@@ -157,24 +181,16 @@ public class DailyItemWiseSalesEntry {
             
                 if (columns.length > 0 && columns[0].equals(editItemCode)) {
                     found = true;
-                System.out.println("Item Found. Current Details:");
-                    System.out.print(salesEntryTextFile);
-                    System.out.println("Which One Do You Want To Edit? \n1. Date\n2. Quantity Sold\n(Enter '1' or '2')\n");
-                    int input = sc1.nextInt();
+                System.out.println("Item Found. \nCurrent Details:");
+                    System.out.println(salesEntryList);
+                    boolean validInput = false;
                     
-                    switch(input){
+                    while(!validInput){
+                        System.out.println("Which One Do You Want To Edit? \n1. Date\n2. Quantity Sold\n(Enter '1' or '2')\n");
+                        int input = sc1.nextInt();
+                        
+                        switch(input){
                         case 1:
-                            System.out.println("Enter New Quantity Sold: ");
-                            int newQuantitySold = sc1.nextInt();
-                        
-                            double totalSales = newQuantitySold * Double.parseDouble(columns[2]);
-                        
-                            // Update the item entry with new values
-                            columns[3] = String.valueOf(newQuantitySold);
-                            columns[6] = String.valueOf(totalSales);
-                            break;
-                        
-                        case 2:
                             System.out.println("Enter New Date (in yyyy-MM-dd format): ");
                             String newDateStr = sc1.next();
                             Date newDate = parseDate(newDateStr);
@@ -186,12 +202,43 @@ public class DailyItemWiseSalesEntry {
                             } else {
                                 System.out.println("Invalid date format. Date not updated.");
                             }
-                        
                             break;
-                    
+                            
+                        case 2:
+                            int newQuantitySold;
+                            // Retrieve available quantity from 'Item.txt'
+                            int availableQuantity = getAvailableQuantity(editItemCode);
+
+                            do {
+                                System.out.println("Please Enter The Quantity That Has Sold: ");
+                                
+                                if (sc1.hasNextInt()) {
+                                    newQuantitySold = sc1.nextInt();
+                                    sc1.nextLine(); // Consume the newline character
+                                    
+                                    if (newQuantitySold <= 0) {
+                                        System.out.println("Please Enter A Valid Positive Integer Number.");
+                                    } else if (newQuantitySold > availableQuantity) {
+                                        System.out.println("Input Error: Quantity sold cannot exceed the available quantity.");
+                                        newQuantitySold = -1; // Set an invalid value to continue the loop
+                                    } else {
+                                        // Exit the loop when a valid quantity is provided
+                                        break;
+                                    }
+                                } else {
+                                    System.out.println("Invalid input. Please enter a valid positive integer.");
+                                    sc1.nextLine(); // Consume the invalid input
+                                    newQuantitySold = -1; // Set an invalid value to continue the loop
+                                }
+                            } while (newQuantitySold <= 0);
+                            System.out.println("Updated Quantity Sold: " + newQuantitySold);
+                            break;
                         default:
                             System.out.println("Error Input. Please Enter Again.");
+                        }
+                        break;
                     }
+                    
                 
                     // Join the updated columns into a single string
                     String updatedItem = String.join(",", columns);
@@ -200,25 +247,41 @@ public class DailyItemWiseSalesEntry {
                     salesEntryList.set(i, updatedItem);
                 
                     // Save Updated Data Into Text File
-                    saveDIWSE(salesEntryList, salesEntryTextFile);
-                    break; // Exit the loop after editing
+                    saveDIWSE();
+                    
+                    System.out.println("Back to the main menu...");
+                    menu();              
                 }
             }
-
             if (!found) {
                 System.out.println("Error: Item Code not found in the file. Please Enter a Valid Item Code.");
             }
-        
-        } while (!found); // Continue looping until a valid item code is found
-    }   
+        }while (!found);// Continue looping until a valid item code is found
+    }  
+
     
     public void deleteDIWSE(){
+        
+        boolean fileIsEmpty = true; // Track if the sales entry file is empty
+
+        System.out.println("Printing Items...");
+        try (BufferedReader reader = new BufferedReader(new FileReader(salesEntryTextFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line); // Print each line from the file
+                fileIsEmpty = false; // File is not empty if we found at least one line
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         
         Scanner sc1 = new Scanner(System.in);
         System.out.println("Enter the Item Code you want to delete: ");
         String input = sc1.next();
         boolean found = false;
 
+        
+        
         for (int i = 0; i < salesEntryList.size(); i++) {
             String item = salesEntryList.get(i);
             String[] columns = item.split(",");
@@ -231,7 +294,7 @@ public class DailyItemWiseSalesEntry {
                 salesEntryList.remove(i);
                 
                 //Save Updated Data Into Text File
-                saveDIWSE(salesEntryList, "SalesEntry.txt");
+                saveDIWSE();
                 return; // Exit the loop after deleting the item
             }
         }
@@ -242,17 +305,17 @@ public class DailyItemWiseSalesEntry {
         
     }
 
-    //Save Data Into File
-    public void saveDIWSE(List<String> salesEntryList, String fileName) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+    //Save data into file
+    public void saveDIWSE() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(salesEntryTextFile))) {
             for (String entry : salesEntryList) {
                 writer.write(entry);
                 writer.newLine(); // Add a newline after each entry
             }
-            System.out.println("Data Is Successfully Saved To " + fileName);
+            System.out.println("Data Is Successfully Saved To 'SalesEntry.txt'");
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Error: Failed to save data to " + fileName);
+            System.out.println("Error: Failed to save data to 'SalesEntry.txt'");
         }
     }
     
@@ -285,6 +348,25 @@ public class DailyItemWiseSalesEntry {
 
         return parsedDate;
     }
+    
+    // Function to retrieve available quantity from 'Item.txt'
+private int getAvailableQuantity(String itemCode) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(itemTextFile))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] columns = line.split(",");
+            if (columns.length > 0 && columns[0].equalsIgnoreCase(itemCode)) {
+                // Return the available quantity from 'Item.txt'
+                return Integer.parseInt(columns[3]);
+            }
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    // Return 0 if the item code is not found
+    return 0;
+}
+
     
     
 

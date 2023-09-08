@@ -173,7 +173,7 @@ public class generatePurchaseOrder {
                         System.out.println("Unit Price: " + prUnitPrice);
                         System.out.println("Total Price: " + prTotalPrice);
                         
-                        String newPurchaseOrder = "Purchase Order ID: " + newPOID + ",Purchase Order Date: " + poDate + ",Purchase Manager ID: " + pmID + ",Purchase Requisition ID: " + prID + ",Item ID: " + prItemID + ",Item Quantity: " + prItemQuantity + ",Unit Price: " + prUnitPrice + ",Total Price: " + prTotalPrice + ",Supplier ID: " + prSupplierID + "\n";
+                        String newPurchaseOrder = newPOID + "," + poDate + "," + pmID + "," + prID + "," + prItemID + "," + prItemQuantity + "," + prUnitPrice + "," + prTotalPrice + "," + prSupplierID;
                         
                         // Add the new Purchase Order into list
                         purchaseOrderList.add(newPurchaseOrder);
