@@ -5,8 +5,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        loginAuthentication authentication = new loginAuthentication("C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\Login\\LoginCredentials.txt");
-
+        loginAuthentication authentication = new loginAuthentication("C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\Login\\LoginCredentials.txt"); // Create an instance of loginAuthentication
 
         System.out.println("Welcome to the Purchase Order Management System!");
         System.out.println("1. Login");
