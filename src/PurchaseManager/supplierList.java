@@ -10,7 +10,7 @@ public class supplierList {
         viewSuppliers();
     }
 
-    private static void viewSuppliers() {
+    public static void viewSuppliers() {
         System.out.println("\n============================================================");
         System.out.println("\tList of Suppliers");
         System.out.println("\n============================================================");

@@ -10,7 +10,7 @@ public class itemList {
         viewItems();
     }
 
-    private static void viewItems() {
+    public static void viewItems() {
         System.out.println("\n============================================================");
         System.out.println("\tList of Items");
         System.out.println("\n============================================================");

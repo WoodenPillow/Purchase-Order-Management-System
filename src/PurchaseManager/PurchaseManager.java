@@ -1,9 +1,6 @@
 package PurchaseManager;
 
 import java.util.Scanner;
-import java.util.List;
-import Login.*;
-import SalesManager.*;
 
 public class PurchaseManager extends User {
 
@@ -11,6 +8,7 @@ public class PurchaseManager extends User {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
+        
         while (!exit) {
             System.out.println("\nPurchase Manager Menu:");
             System.out.println("1. Generate Purchase Order");
@@ -21,20 +19,24 @@ public class PurchaseManager extends User {
 
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline character
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
-                    generatePurchaseOrder(items, suppliers);
+                    generatePurchaseOrder genPO = new generatePurchaseOrder();
+                    genPO.menu();
                     break;
                 case 2:
-                    viewItemList(items);
+                    itemList viewItem = new itemList();
+                    viewItem.viewItems();
                     break;
                 case 3:
-                    viewPurchaseOrderList(purchaseOrders);
+                    purchaseOrderList viewPO = new purchaseOrderList();
+                    viewPO.displayPurchaseOrders();
                     break;
                 case 4:
-                    viewSupplierList(suppliers);
+                    supplierList viewSup = new supplierList();
+                    viewSup.viewSuppliers();
                     break;
                 case 5:
                     exit = true;
