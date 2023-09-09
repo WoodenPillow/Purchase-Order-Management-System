@@ -208,13 +208,18 @@ public class generatePurchaseOrder  {
                         case 1:
                             System.out.println("Enter New Purchase Order Date (yyyy-MM-dd): ");
                             String newDateStr = sc1.next();
-                            Date newDate = parseDate(newDateStr);
                     
-                            if (newDate != null) {
-                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                                columns[1] = dateFormat.format(newDate);
+                            // Parse the user-entered date into the desired format
+                            SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            SimpleDateFormat outputDateFormat = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
+
+                            try {
+                                Date newDate = inputDateFormat.parse(newDateStr);
+                                String formattedDate = outputDateFormat.format(newDate);
+
+                                columns[1] = formattedDate;
                                 System.out.println("Purchase Order Date updated successfully.");
-                            } else {
+                            } catch (ParseException e) {
                                 System.out.println("Invalid date format. Date not updated.");
                             }
                             break;

@@ -2,9 +2,9 @@ package PurchaseManager;
 
 import java.util.Scanner;
 
-public class PurchaseManager extends User {
+public class PurchaseManager {
 
-    public void purchaseManagerMenu(List<Item> items, List<Supplier> suppliers, List<PurchaseOrder> purchaseOrders) {
+    public void purchaseManagerMenu() {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
