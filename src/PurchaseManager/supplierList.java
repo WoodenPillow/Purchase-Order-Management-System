@@ -6,10 +6,6 @@ import java.util.*;
 public class supplierList {
     private static final String FILE_PATH = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\SalesManager\\Supplier.txt";
 
-    public static void main(String[] args) {
-        viewSuppliers();
-    }
-
     public static void viewSuppliers() {
         System.out.println("\n============================================================");
         System.out.println("\tList of Suppliers");

@@ -10,7 +10,7 @@ import java.util.*;
  * @author Oscar
  */
 public class displayRequisition {
-    private static final String FILE_PATH = "/C:/Users/user/Desktop/Uni Stuff/Year 2 Semester 1/OODJ/Assignment/Purchase-Order-Management-System/Purchase-Order-Management-System/src/SalesManager/PurchaseRequisition.txt/";
+    private static final String FILE_PATH = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\SalesManager\\PurchaseRequisition.txt";
 
 public void displayPurchaseRequisitions() {
     try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
