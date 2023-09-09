@@ -4,8 +4,8 @@ import java.io.*;
 import java.util.*;
 
 public class itemEntry {
-    private static final String FILE_PATH = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\SalesManager\\Item.txt";
-    private static final String FILE_PATH_BUFFER = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\SalesManager\\Item_Buffer.txt";
+    private static final String FILE_PATH = "C:\\Users\\user\\Desktop\\Uni Stuff\\Year 2 Semester 1\\OODJ\\Assignment\\Purchase-Order-Management-System\\src\\SalesManager\\Item.txt";
+    private static final String FILE_PATH_BUFFER = "C:\\Users\\user\\Desktop\\Uni Stuff\\Year 2 Semester 1\\OODJ\\Assignment\\Purchase-Order-Management-System\\src\\SalesManager\\Item_Buffer.txt";
 
     private static final int ITEM_FIELDS = 5; // Number of fields in an item record
 

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class viewPurchaseOrder {
-    private static final String poTextFile = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\PurchaseManager\\PurchaseOrder.txt";
+    private static final String poTextFile = "C:\\Users\\user\\Desktop\\Uni Stuff\\Year 2 Semester 1\\OODJ\\Assignment\\Purchase-Order-Management-System\\src\\SalesManager\\PurchaseOrder.txt";
 
     public viewPurchaseOrder(){}
     

@@ -6,7 +6,7 @@ import Login.*;
 import SalesManager.SalesManager;
 
 public class userManagement {
-    private static final String FILE_PATH = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\Login\\LoginCredentials.txt";
+    private static final String FILE_PATH = "C:\\Users\\user\\Desktop\\Uni Stuff\\Year 2 Semester 1\\OODJ\\Assignment\\Purchase-Order-Management-System\\src\\Login\\LoginCredentials.txt";
     private List<User> users = new ArrayList<>();
 
     public userManagement() {
