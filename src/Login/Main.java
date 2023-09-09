@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        loginAuthentication authentication = new loginAuthentication("C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\Login\\LoginCredentials.txt"); // Create an instance of loginAuthentication
+        loginAuthentication authentication = new loginAuthentication("C:\\Users\\user1\\Desktop\\APU\\Year 2 Sem 1\\Object Oriented Development with Java\\Assignment\\Assignment\\Purchase-Order-Management-System\\src\\Login\\LoginCredentials.txt"); // Create an instance of loginAuthentication
 
         System.out.println("Welcome to the Purchase Order Management System by Group 55 (YAP MING SHEN, HEW YAO REN & JOSHUA CHONG KAI REN)!");
         System.out.println("1. Login");

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class purchaseOrderList {
-    private static final String poTextFile = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\PurchaseManager\\PurchaseOrder.txt";
+    private static final String poTextFile = "C:\\Users\\user1\\Desktop\\APU\\Year 2 Sem 1\\Object Oriented Development with Java\\Assignment\\Assignment\\Purchase-Order-Management-System\\src\\SalesManager\\PurchaseOrder.txt";
 
     public purchaseOrderList() {}
 

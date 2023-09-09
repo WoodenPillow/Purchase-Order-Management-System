@@ -7,9 +7,9 @@ import java.text.SimpleDateFormat;
 
 public class generatePurchaseOrder  {
     
-    private static final String poTextFile = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\PurchaseManager\\PurchaseOrder.txt";
-    private static final String usersTextFile = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\Login\\LoginCredentials.txt";
-    private static final String prTextFile = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\SalesManager\\PurchaseRequisition.txt";
+    private static final String poTextFile = "C:\\Users\\user1\\Desktop\\APU\\Year 2 Sem 1\\Object Oriented Development with Java\\Assignment\\Assignment\\Purchase-Order-Management-System\\src\\SalesManager\\PurchaseOrder.txt";
+    private static final String usersTextFile = "C:\\Users\\user1\\Desktop\\APU\\Year 2 Sem 1\\Object Oriented Development with Java\\Assignment\\Assignment\\Purchase-Order-Management-System\\src\\Login\\LoginCredentials.txt";
+    private static final String prTextFile = "C:\\Users\\user1\\Desktop\\APU\\Year 2 Sem 1\\Object Oriented Development with Java\\Assignment\\Assignment\\Purchase-Order-Management-System\\src\\PurchaseManager\\PurchaseOrder.txt";
     
     private String purchaseManagerID;
     private String purchaseManagerRole;

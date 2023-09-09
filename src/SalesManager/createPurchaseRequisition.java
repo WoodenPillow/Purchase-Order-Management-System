@@ -10,8 +10,8 @@ public class createPurchaseRequisition {
     private String requisitionID;
     private String itemCode;
     private double totalPrice;
-    private String FILE_PATH1 = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\SalesManager\\Item.txt";
-    private String FILE_PATH2 = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\SalesManager\\PurchaseRequisition.txt";
+    private String FILE_PATH1 = "C:\\Users\\user1\\Desktop\\APU\\Year 2 Sem 1\\Object Oriented Development with Java\\Assignment\\Assignment\\Purchase-Order-Management-System\\src\\SalesManager\\Item.txt";
+    private String FILE_PATH2 = "C:\\Users\\user1\\Desktop\\APU\\Year 2 Sem 1\\Object Oriented Development with Java\\Assignment\\Assignment\\Purchase-Order-Management-System\\src\\SalesManager\\PurchaseRequisition.txt";
     private int quantityRequired;
     private String requiredDate;
     private String supplierCode;
