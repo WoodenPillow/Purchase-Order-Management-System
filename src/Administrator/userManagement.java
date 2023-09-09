@@ -3,9 +3,10 @@ package Administrator;
 import java.io.*;
 import java.util.*;
 import Login.*;
+import SalesManager.SalesManager;
 
 public class userManagement {
-    private static final String CREDENTIALS_FILE = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\Login\\LoginCredentials.txt";
+    private static final String FILE_PATH = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\Login\\LoginCredentials.txt";
     private List<User> users = new ArrayList<>();
 
     public userManagement() {
@@ -13,7 +14,7 @@ public class userManagement {
     }
 
     public void loadUsers() {
-        try (BufferedReader buffer = new BufferedReader(new FileReader(CREDENTIALS_FILE))) {
+        try (BufferedReader buffer = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
             while ((line = buffer.readLine()) != null) {
                 String[] userData = line.split(",");
@@ -81,7 +82,7 @@ public class userManagement {
     }
 
     public void saveUsers() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CREDENTIALS_FILE))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
             for (User user : users) {
                 writer.write(user.getUserID() + "," + user.getUsername() + "," + user.getPassword() + "," + user.getRole());
                 writer.newLine();
@@ -100,7 +101,7 @@ public class userManagement {
         return null;
     }
 
-    public static void main(String[] args) {
+    public void userManagementMenu(){
         userManagement userManagement = new userManagement(); // Use userManagement class name
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;

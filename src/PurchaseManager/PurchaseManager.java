@@ -3,6 +3,11 @@ package PurchaseManager;
 import java.util.Scanner;
 
 public class PurchaseManager {
+    
+    public static void main (String[] args){
+        PurchaseManager pm = new PurchaseManager();
+        pm.purchaseManagerMenu();  
+    }
 
     public void purchaseManagerMenu() {
         Scanner scanner = new Scanner(System.in);

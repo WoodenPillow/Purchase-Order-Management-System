@@ -1,5 +1,8 @@
 package Login;
 
+import Administrator.Administrator;
+import SalesManager.SalesManager;
+import PurchaseManager.PurchaseManager;
 import java.util.Scanner;
 
 public class Main {
@@ -9,12 +12,11 @@ public class Main {
 
         System.out.println("Welcome to the Purchase Order Management System by Group 55 (YAP MING SHEN, HEW YAO REN & JOSHUA CHONG KAI REN)!");
         System.out.println("1. Login");
-        System.out.println("2. Register");
-        System.out.println("3. Exit");
+        System.out.println("2. Exit");
 
         System.out.print("Enter your choice: ");
         int choice = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
+        scanner.nextLine(); 
 
         if (choice == 1) {
             System.out.print("Enter Username: ");
@@ -30,43 +32,33 @@ public class Main {
                 String role = authenticatedUser.getRole();
                 System.out.println("Welcome, " + username + " (" + role + ")!");
 
-                // Now, you can perform actions based on the user's role
-                if ("Admin".equals(role)) {
-                    // Execute admin functions
-                    // For example: adminFunction(authenticatedUser);
-                } else if ("Sales_Manager".equals(role)) {
-                    // Execute sales manager functions
-                    // For example: salesManagerFunction(authenticatedUser);
-                } else if ("Purchase_Manager".equals(role)) {
-                    // Execute purchase manager functions
-                    // For example: purchaseManagerFunction(authenticatedUser);
-                } else {
-                    // Handle unrecognized roles
-                    System.out.println("Unrecognized role: " + role);
+                if ("Administrator".equals(role)) {
+                    Administrator adm = new Administrator();
+                    adm.administratorMenu();
+                } 
+                
+                else if ("Sales_Manager".equals(role)) {
+                    SalesManager sm = new SalesManager();
+                    sm.salesManagerMenu();
+                    
+                }              
+                else if ("Purchase_Manager".equals(role)) {
+                    PurchaseManager pm = new PurchaseManager();
+                    pm.purchaseManagerMenu(); 
+                    
                 }
-            } else {
+                
+            } 
+            
+            else {
                 System.out.println("Login failed. Invalid credentials.");
-            }
-        } else if (choice == 2) {
-            // User registration
-            System.out.print("Enter User ID: ");
-            String userID = scanner.nextLine();
-            System.out.print("Enter Username: ");
-            String username = scanner.nextLine();
-            System.out.print("Enter Password: ");
-            String password = scanner.nextLine();
-            System.out.print("Enter Role: ");
-            String role = scanner.nextLine();
-
-            // Create an instance of userRegistration and register the new user
-            userRegistration registration = new userRegistration();
-            registration.registerUser(userID, username, password, role);
-
-            System.out.println("Registration successful!");
-        } else if (choice == 3) {
+            }    
+        } 
+        else if (choice == 2) {
             System.out.println("Exiting Purchase Order Management System by YAP MING SHEN. Goodbye!");
             System.exit(0);
-        } else {
+        } 
+        else {
             System.out.println("Invalid choice. Please enter a valid option.");
         }
     }

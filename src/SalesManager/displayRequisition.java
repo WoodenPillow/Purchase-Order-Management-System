@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class displayRequisition {
-    private String FILE_PATH = "/C:/Users/user/Desktop/Uni Stuff/Year 2 Semester 1/OODJ/Assignment/Purchase-Order-Management-System/src/SalesManager/PurchaseRequisition.txt/";
+    private String FILE_PATH = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\SalesManager\\PurchaseRequisition.txt";
     
 public void displayPurchaseRequisitions() {
     try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {

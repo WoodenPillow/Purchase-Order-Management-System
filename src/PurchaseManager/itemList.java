@@ -6,10 +6,6 @@ import java.util.*;
 public class itemList {
     private static final String FILE_PATH = "C:\\Users\\vince\\OneDrive\\Documents\\NetBeansProjects\\Purchase-Order-Management-System(POMS)\\src\\SalesManager\\Item.txt";
 
-    public static void main(String[] args) {
-        viewItems();
-    }
-
     public static void viewItems() {
         System.out.println("\n============================================================");
         System.out.println("\tList of Items");
