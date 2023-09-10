@@ -20,7 +20,8 @@ public class PurchaseManager {
             System.out.println("2. View Item List");
             System.out.println("3. View Purchase Order List");
             System.out.println("4. View Supplier List");
-            System.out.println("5. Exit");
+            System.out.println("5. View Purchase Requisition");
+            System.out.println("6. Exit");
 
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
@@ -44,6 +45,10 @@ public class PurchaseManager {
                     viewSup.viewSuppliers();
                     break;
                 case 5:
+                    displayRequisition dPR = new displayRequisition();
+                    dPR.displayPurchaseRequisitions();
+                    break;    
+                case 6:
                     exit = true;
                     System.out.println("Exiting Purchase Manager Menu.");
                     break;
