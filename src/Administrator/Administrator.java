@@ -28,7 +28,7 @@ public class Administrator {
                     break;
                 case 3:
                     exit = true;
-                    System.out.println("Exiting Sales Manager Menu.");
+                    System.out.println("Exiting Administrator's Menu.");
                     break;
                 default:
                     System.out.println("Invalid choice. Please enter a valid option.");
