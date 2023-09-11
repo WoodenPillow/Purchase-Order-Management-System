@@ -17,7 +17,7 @@ public class dataKing {
 
     public void dKMenu() {
         while (true) {
-            System.out.println("Data King (Management) Menu:");
+            System.out.println("Data King1 (Management) Menu:");
             System.out.println("1. Edit Items (SalesManager)");
             System.out.println("2. Edit Suppliers (SalesManager)");
             System.out.println("3. Edit SalesEntries (SalesManager)");
@@ -40,7 +40,7 @@ public class dataKing {
                     break;
                 case 3:
                     DailyItemWiseSalesEntry diwse = new DailyItemWiseSalesEntry();
-                    diwse.editDIWSE();
+                    diwse.menu();
                     break;
                 case 4:
                     createPurchaseRequisition createpr = new createPurchaseRequisition();
@@ -48,7 +48,7 @@ public class dataKing {
                     break;
                 case 5:
                     generatePurchaseOrder genPO = new generatePurchaseOrder();
-                    genPO.editPO();
+                    genPO.menu();
                     break;
                 case 6:
                     System.out.println("Exiting Data King (Management) Menu.");

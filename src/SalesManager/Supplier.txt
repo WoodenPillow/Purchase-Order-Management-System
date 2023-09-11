@@ -2,4 +2,4 @@ S0001,GeforceLtd,I0001,USA
 S0002,ROG,I0003,Canada          
 S0003,EVGA,I0005,Belgium         
 S0004,Gigabyte,I0002,Taiwan          
-S0005,MSI,I0004,Malaysia
+S0005,MSO,I0004,Malaysio
